@@ -1,0 +1,6 @@
+.global_center_style{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
