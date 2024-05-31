@@ -15,6 +15,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Sidebar } from '../Sidebar/Sidebar';
+import { useLocation } from 'react-router-dom';
+import { navbarHeading } from '../Sidebar/utils';
 
 const drawerWidth: number = 240;
 
@@ -69,6 +71,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function NavbarWithComp({children}:{children:React.ReactElement}) {
+  const {pathname} = useLocation();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -103,7 +106,7 @@ export default function NavbarWithComp({children}:{children:React.ReactElement})
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              {navbarHeading(pathname)}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -146,8 +149,19 @@ export default function NavbarWithComp({children}:{children:React.ReactElement})
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {children}
           </Container>
+          {/* <Copyright/> */}
         </Box>
       </Box>
     </ThemeProvider>
+  );
+}
+
+function Copyright(props: any) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      {new Date().getFullYear()}
+      {' by (Shivanshu Mishra)'}
+    </Typography>
   );
 }

@@ -1,25 +1,48 @@
 import {PersonOutline,MailOutline, WorkOutline,WhatshotOutlined} from '@mui/icons-material';
 
+const profileRoute = '/profile';
+const projectsRoute = '/';
+const contactMeRoute = '/contact-me';
+const workExperience = '/work-exp';
+
 const navbarListArray:SidebarEachType[] = [
     {
         title : 'Projects',
         icon : <WhatshotOutlined/>,
-        route : '/'
+        route : projectsRoute
     },
     {
         title : 'Profile',
         icon : <PersonOutline/>,
-        route : '/profile'
+        route : profileRoute
     },
     {
         title : 'Contact Me',
         icon : <MailOutline/>,
-        route : '/contact-me'
+        route : contactMeRoute
     },
     {
         title : 'Experience',
         icon : <WorkOutline/>,
-        route : '/work-exp'
+        route : workExperience
     }
 ]
-export {navbarListArray};
+
+
+
+const navbarHeading = (currentRoute: string) => {
+    switch (currentRoute) {
+        case profileRoute:
+            return 'My Profile';
+        case projectsRoute:
+            return 'Manage Projects';
+        case contactMeRoute:
+            return 'Contact Me';
+        case workExperience:
+            return 'Work Experience';
+        default:
+            return "Hey, Please go back!"; 
+    }
+}
+
+export {navbarListArray,navbarHeading};
