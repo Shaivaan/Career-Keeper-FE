@@ -1,0 +1,10 @@
+.addButtonParent{
+    display: flex;
+    justify-content: end;
+}
+
+.image_uplaod{
+    height: 12rem;
+    border: 1.5px dashed #1976D2;
+    border-radius: 10px;
+}

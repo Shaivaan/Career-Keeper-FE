@@ -4,3 +4,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.global_uniform_vertical_style{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
