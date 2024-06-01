@@ -1,11 +1,13 @@
-import {Autocomplete,Box,Button,Checkbox,IconButton,Modal} from "@mui/material";
+import {Autocomplete,Box,Button,Checkbox,IconButton,Modal, Grid} from "@mui/material";
 import "./MyProjects.css";
 import {AddCircleOutline,CheckBoxOutlineBlank,CheckBox,Close} from "@mui/icons-material";
 import { useRef, useState } from "react";
 import { style, tech_used_array } from "./utils";
 import { Formik } from "formik";
 import { add_edit_project_initial_values, add_edit_project_schema } from "../../Components/FormsComp/InitialValues";
-import { FormTextField, HiddenInput, UploadImageBox } from "../../Components/ProjectsComp/AddEditProjectModalComp";
+import { FormTextField, HiddenInput, UploadImageBox } from "../../Components/ProjectsComp/AddEditProjectModalComp/AddEditProjectModalComp";
+import ProjectCard from "../../Components/ProjectsComp/Card/Card";
+import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
@@ -15,13 +17,30 @@ export const MyProjectsScreen = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteModalOpen = () => setIsDeleteModalOpen(true);
+  const handleDeleteModalClose = () => setIsDeleteModalOpen(false);
+
+
   return (
     <Box>
+      <DeleteModal isOpen={isDeleteModalOpen} closeModal={()=>handleDeleteModalClose()}/>
       <EditProjectModal isOpen={open} handleClose={handleClose} />
       <AddProjectButton handleOpen={handleOpen} />
+      <Box marginTop={'1rem'}><CardsParentComponent handleDeleteModalOpen={handleDeleteModalOpen}/></Box>
     </Box>
   );
 };
+
+
+const CardsParentComponent=({handleDeleteModalOpen}:CardParentCompType)=>{
+  const projects = [1,1,11,1,1,1,1];
+  return <Box>
+     <Grid container justifyContent={'space-between'} spacing={4}>
+      {projects.map((el)=> <ProjectCard handleDeleteModalOpen={handleDeleteModalOpen}/>)}
+     </Grid>
+  </Box>
+}
 
 const AddProjectButton = ({ handleOpen }: AddProjectButtonParent) => {
   return (

@@ -32,3 +32,12 @@ interface UploadImageBoxType{
     handleBoxClick:()=>void
     project_image : FileType
 }
+
+interface DeleteModalType {
+    isOpen:boolean
+    closeModal : ()=>void
+}
+
+interface CardParentCompType{
+    handleDeleteModalOpen:()=>void
+}
