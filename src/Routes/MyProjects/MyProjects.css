@@ -4,7 +4,13 @@
 }
 
 .image_uplaod{
-    height: 12rem;
+    height: 19rem;
     border: 1.5px dashed #1976D2;
     border-radius: 10px;
+    overflow: hidden;
+}
+
+.image_uplaod:hover{
+    cursor: pointer;
+    border: 2px dotted #1976D2;
 }

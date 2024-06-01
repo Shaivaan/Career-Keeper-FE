@@ -1,3 +1,4 @@
+
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -7,11 +8,12 @@ const style = {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
-    maxHeight: '80vh',
+    maxHeight: '90vh',
     overflow:'auto'
   };
 
 
   const tech_used_array = ['Git','HTML','CSS', 'Typescript', 'NodeJS','Github','MongoDB','React'];
+
 
   export {style,tech_used_array}

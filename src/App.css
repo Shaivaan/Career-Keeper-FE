@@ -10,3 +10,8 @@
     flex-direction: column;
     row-gap: 1rem;
 }
+
+.global_error_text{
+    color: #D32F2F;
+    font-size: 0.75rem;
+}
