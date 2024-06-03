@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+const urlValidation = Yup.string().url('Must be a valid URL');
 const add_edit_project_initial_values:AddProjectInitialValueType = {
     title : null,
     description : null,
@@ -39,4 +40,56 @@ const add_edit_project_schema = Yup.object().shape({
   });
   
 
-  export {add_edit_project_schema,add_edit_project_initial_values }
+  const edit_profile_form_initial_values = {
+    first_name :null,
+    last_name : null,
+    profile_picture:null,
+    email : null,
+    about: null
+  }
+
+  const edit_profile_form_validation_schema = Yup.object().shape({
+    first_name: Yup.string()
+    .required('First Name is required')
+    .matches(/^\S.*\S$|^\S$/, 'Title should not have leading or trailing spaces'),
+    last_name: Yup.string()
+    .required('Last Name is required')
+    .matches(/^\S.*\S$|^\S$/, 'Title should not have leading or trailing spaces'),
+    email: Yup.string().email('Please enter proper email').required('Email is required'),
+    about : Yup.string().required('About is required'),
+    profile_picture: Yup.mixed()
+      .required('Profile Picture is required')
+      .test('is-file-or-url', 'Image must be a file or a valid URL', value => {
+        if (typeof value === 'string') {
+          return urlRegex.test(value);
+        }
+        return value instanceof File;
+    }),
+    
+  });
+
+
+
+  const showcase_form_initial_values = {
+    linked_in : null,
+    github : null,
+    resume : null,
+    instagram : null,
+    youtube : null
+  }
+
+  const showcaseFormValidationSchema = Yup.object().shape({
+    linked_in: urlValidation.required('LinkedIn Link is required'),
+    github: urlValidation.required('GitHub Link is required'),
+    resume: urlValidation.required('Resume Link is required'),
+    instagram: urlValidation.nullable().matches(
+      /^(https?:\/\/)?((w{3}\.)?)instagram\.com\/[a-zA-Z0-9(@\.\-_)]{1,}/,
+      'Must be a valid Instagram URL'
+    ),
+    youtube: urlValidation.nullable().matches(
+      /^(https?:\/\/)?((w{3}\.)?)youtube\.com\/[a-zA-Z0-9(@\.\-_)]{1,}/,
+      'Must be a valid YouTube URL'
+    ),
+  });
+
+  export {showcase_form_initial_values,showcaseFormValidationSchema,edit_profile_form_initial_values,edit_profile_form_validation_schema ,add_edit_project_schema,add_edit_project_initial_values }

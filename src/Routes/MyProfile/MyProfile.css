@@ -23,3 +23,17 @@
     border-radius: 20px;
     padding: 1rem;
 }
+
+.profile_picture_edit_avatar{
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+}
+
+.profile_pic_pen_icon {
+    position: absolute !important;
+    top: -0.5rem !important;
+    right: -1rem !important;
+    color: #fff;
+    z-index: 1 !important;
+}
