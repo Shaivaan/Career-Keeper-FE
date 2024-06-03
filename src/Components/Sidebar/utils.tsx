@@ -4,7 +4,6 @@ const profileRoute = '/profile';
 const projectsRoute = '/';
 const contactMeRoute = '/contact-me';
 const workExperience = '/work-exp';
-
 const navbarListArray:SidebarEachType[] = [
     {
         title : 'Projects',
@@ -45,4 +44,4 @@ const navbarHeading = (currentRoute: string) => {
     }
 }
 
-export {navbarListArray,navbarHeading};
+export {navbarListArray,navbarHeading,profileRoute,projectsRoute,workExperience,contactMeRoute};
