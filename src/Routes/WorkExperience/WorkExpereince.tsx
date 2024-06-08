@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { Box, Grid, IconButton,  TextFieldProps, Checkbox } from "@mui/material"
+import { Box, Grid, IconButton,  TextFieldProps, Checkbox, Avatar } from "@mui/material"
 import { AddProjectButton, SubmitAndCancel } from "../../Components/FormsComp/SubmitAndCancel"
 import { GeneralModalParent } from "../../Components/GeneralModalParent/GeneralModalParent"
 import { Formik } from "formik"
@@ -19,8 +19,32 @@ export const WorkExpereince=()=>{
     return <Box>
         <AddProjectButton handleOpen={handleOpeneWorkExpModal} buttonTitle="Experience"/>
         <AddEditExperienceModal isOpen={isWorkExpEditModalOpen} handleClose={handleCloseWorkExpModal}/>
+        <Box className = 'global_uniform_vertical_style' marginTop={'1rem'}>
+          <ExperienceCard/>
+          
+        </Box>
     </Box>
 }
+
+const ExperienceCard=()=>{
+  return <Box className="gridBackground">
+    <Box className = 'cardParent'>
+      <Avatar className="logo_avatar"/>
+      <Box className = 'company_name_container'>
+        <Box className = 'headind_style'>Metafic</Box>
+        <Box>24 July, 2022 - Currently (2 year)</Box>
+      </Box>
+    </Box>
+
+    <Box className = 'workExpDescription'>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro laboriosam facere id corrupti! Ex nam dolores, quod tenetur expedita voluptate reiciendis quo ullam, ducimus rerum culpa, iure at. Accusantium, quo.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro laboriosam facere id corrupti! Ex nam dolores, quod tenetur expedita voluptate reiciendis quo ullam, ducimus rerum culpa, iure at. Accusantium, quo.
+    </Box>
+    
+  
+  </Box>
+}
+
 
 const AddEditExperienceModal=({handleClose,isOpen}:WorkExpModalType)=>{
 

@@ -1,4 +1,4 @@
-import {PersonOutline,MailOutline, WorkOutline,WhatshotOutlined} from '@mui/icons-material';
+import {PersonOutline, WorkOutline,WhatshotOutlined} from '@mui/icons-material';
 
 const profileRoute = '/profile';
 const projectsRoute = '/';
@@ -14,11 +14,6 @@ const navbarListArray:SidebarEachType[] = [
         title : 'Profile',
         icon : <PersonOutline/>,
         route : profileRoute
-    },
-    {
-        title : 'Contact Me',
-        icon : <MailOutline/>,
-        route : contactMeRoute
     },
     {
         title : 'Experience',

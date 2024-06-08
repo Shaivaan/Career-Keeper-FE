@@ -1,3 +1,7 @@
+*{
+    font-family: cursive !important;
+}
+
 .global_center_style{
     display: flex;
     flex-direction: column;
@@ -20,4 +24,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.headind_style{
+    font-size: 1.2rem;
+    font-weight: bold;
 }
