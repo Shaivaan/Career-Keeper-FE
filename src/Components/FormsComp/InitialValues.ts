@@ -92,4 +92,43 @@ const add_edit_project_schema = Yup.object().shape({
     ),
   });
 
-  export {showcase_form_initial_values,showcaseFormValidationSchema,edit_profile_form_initial_values,edit_profile_form_validation_schema ,add_edit_project_schema,add_edit_project_initial_values }
+  const expereince_form_initial_value={
+    company_name : null,
+    company_logo : null,
+    exp_desciption : null,
+    joining_date : null,
+    end_date : null,
+    is_currently_working : false
+  }
+
+
+  const baseExpchema = Yup.object().shape({
+    company_name: Yup.string().required('Company name is required'),
+    is_currently_working: Yup.boolean().required(),
+    exp_desciption: Yup.string().required('Description is required'),
+    company_logo: Yup.mixed()
+      .required('Company logo is required')
+      .test('is-file-or-url', 'Image must be a file or a valid URL', (value) => {
+        if (typeof value === 'string') {
+          const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+          return urlRegex.test(value);
+        }
+        return value instanceof File;
+      }),
+    joining_date: Yup.date().required('Joining date is required')
+  });
+
+
+
+  const endDateRequiredSchema = baseExpchema.shape({
+    end_date: Yup.date()
+      .required('End date is required')
+      .min(Yup.ref('joining_date'), 'End date must be after joining date')
+  });
+
+  const endDateNotRequiredSchema = baseExpchema.shape({
+    end_date: Yup.date().nullable()
+  });
+
+
+  export {baseExpchema,endDateRequiredSchema,endDateNotRequiredSchema,expereince_form_initial_value, showcase_form_initial_values,showcaseFormValidationSchema,edit_profile_form_initial_values,edit_profile_form_validation_schema ,add_edit_project_schema,add_edit_project_initial_values }

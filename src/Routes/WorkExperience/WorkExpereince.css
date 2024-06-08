@@ -1,0 +1,8 @@
+#date_picker > div{
+    width: 100% !important;
+}
+
+.is_current_work_parent{
+    display: flex;
+    align-items: center;
+}

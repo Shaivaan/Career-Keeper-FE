@@ -4,6 +4,10 @@
 }
 
 
+.active_menu div:hover{
+    background-color: #1976D2;
+}
+
 .active_menu > div{
     background-color: #1976D2;
 }

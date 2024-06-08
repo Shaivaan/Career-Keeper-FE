@@ -1,4 +1,5 @@
-import { Button } from "@mui/material";
+import { AddCircleOutline } from "@mui/icons-material";
+import { Box, Button } from "@mui/material";
 
 export const SubmitAndCancel = ({handleClose,handleSubmit}:SubmitAndCancelType) => {
   return (
@@ -12,3 +13,22 @@ export const SubmitAndCancel = ({handleClose,handleSubmit}:SubmitAndCancelType) 
     </>
   );
 };
+
+
+export const AddProjectButton = ({ handleOpen,buttonTitle }: AddProjectButtonParent) => {
+  return (
+    <Box className="addButtonParent">
+      <Button
+        onClick={handleOpen}
+        variant="outlined"
+        startIcon={<AddCircleOutline />}
+        size="large"
+        style={{ textTransform: "none" }}
+      >
+        Add New {buttonTitle}
+      </Button>
+    </Box>
+  );
+};
+
+

@@ -7,6 +7,7 @@ interface EditModalType{
 
 interface AddProjectButtonParent{
     handleOpen : ()=>void
+    buttonTitle:string
 }
 
 interface TextFieldErrorToucheType{

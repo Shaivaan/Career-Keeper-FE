@@ -1,14 +1,12 @@
 import {
   Autocomplete,
   Box,
-  Button,
   Checkbox,
   IconButton,
   Grid,
 } from "@mui/material";
 import "./MyProjects.css";
 import {
-  AddCircleOutline,
   CheckBoxOutlineBlank,
   CheckBox,
   Close,
@@ -28,7 +26,7 @@ import {
 import ProjectCard from "../../Components/ProjectsComp/Card/Card";
 import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import { GeneralModalParent } from "../../Components/GeneralModalParent/GeneralModalParent";
-import { SubmitAndCancel } from "../../Components/FormsComp/SubmitAndCancel";
+import { AddProjectButton, SubmitAndCancel } from "../../Components/FormsComp/SubmitAndCancel";
 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />;
@@ -49,7 +47,7 @@ export const MyProjectsScreen = () => {
         closeModal={() => handleDeleteModalClose()}
       />
       <EditProjectModal isOpen={open} handleClose={handleClose} />
-      <AddProjectButton handleOpen={handleOpen} />
+      <AddProjectButton handleOpen={handleOpen} buttonTitle="Project"/>
       <Box marginTop={"1rem"}>
         <CardsParentComponent handleDeleteModalOpen={handleDeleteModalOpen} />
       </Box>
@@ -64,7 +62,7 @@ const CardsParentComponent = ({
   return (
     <Box>
       <Grid container justifyContent={"space-between"} spacing={4}>
-        {projects.map((el) => (
+        {projects.map((_projectData) => (
           <ProjectCard handleDeleteModalOpen={handleDeleteModalOpen} />
         ))}
       </Grid>
@@ -72,21 +70,6 @@ const CardsParentComponent = ({
   );
 };
 
-const AddProjectButton = ({ handleOpen }: AddProjectButtonParent) => {
-  return (
-    <Box className="addButtonParent">
-      <Button
-        onClick={handleOpen}
-        variant="outlined"
-        startIcon={<AddCircleOutline />}
-        size="large"
-        style={{ textTransform: "none" }}
-      >
-        Add New Project
-      </Button>
-    </Box>
-  );
-};
 
 function EditProjectModal({ isOpen, handleClose }: EditModalType) {
   const inputRef = useRef<null | HTMLInputElement>(null);
