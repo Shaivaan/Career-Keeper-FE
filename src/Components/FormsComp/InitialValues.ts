@@ -131,4 +131,49 @@ const add_edit_project_schema = Yup.object().shape({
   });
 
 
-  export {baseExpchema,endDateRequiredSchema,endDateNotRequiredSchema,expereince_form_initial_value, showcase_form_initial_values,showcaseFormValidationSchema,edit_profile_form_initial_values,edit_profile_form_validation_schema ,add_edit_project_schema,add_edit_project_initial_values }
+  const register_initial_values = {
+    email : '',
+    password : '',
+    first_name : '',
+    last_name : ''
+  }
+
+  const register_validation_schema = Yup.object().shape({
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+    password: Yup.string()
+      .required('Password is required')
+      .min(8, 'Password must be at least 8 characters')
+      .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .matches(/[0-9]/, 'Password must contain at least one number')
+      .matches(/[@$!%*?&#]/, 'Password must contain at least one special character'),
+    first_name: Yup.string()
+      .required('First name is required')
+      .trim('Please enter valid detail')
+      .strict(true)
+      .matches(/^[^\s]+(\s+[^\s]+)*$/, 'Please enter valid detail'),
+    last_name: Yup.string()
+      .required('Last name is required')
+      .trim('Please enter valid detail')
+      .strict(true)
+      .matches(/^[^\s]+(\s+[^\s]+)*$/, 'Please enter valid detail'),
+  });
+
+  const login_initial_values = {
+    email : '',
+    password : '',
+    is_remember : false
+  }
+
+  const loginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+    password: Yup.string()
+      .required('Password is required')
+  });
+
+
+  export {loginSchema, login_initial_values, register_initial_values, register_validation_schema,baseExpchema,endDateRequiredSchema,endDateNotRequiredSchema,expereince_form_initial_value, showcase_form_initial_values,showcaseFormValidationSchema,edit_profile_form_initial_values,edit_profile_form_validation_schema ,add_edit_project_schema,add_edit_project_initial_values }

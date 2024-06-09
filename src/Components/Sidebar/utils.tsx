@@ -4,6 +4,9 @@ const profileRoute = '/profile';
 const projectsRoute = '/';
 const contactMeRoute = '/contact-me';
 const workExperience = '/work-exp';
+const loginRoute = '/login';
+const registerRoute = '/register';
+const authRoutesArray = [loginRoute,registerRoute];
 const navbarListArray:SidebarEachType[] = [
     {
         title : 'Projects',
@@ -39,4 +42,4 @@ const navbarHeading = (currentRoute: string) => {
     }
 }
 
-export {navbarListArray,navbarHeading,profileRoute,projectsRoute,workExperience,contactMeRoute};
+export {navbarListArray,navbarHeading,profileRoute,projectsRoute,workExperience,contactMeRoute,loginRoute,registerRoute,authRoutesArray};
