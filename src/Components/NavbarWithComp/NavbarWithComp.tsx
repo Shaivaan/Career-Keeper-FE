@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import {Tooltip} from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -13,10 +14,11 @@ import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import {Logout} from '@mui/icons-material';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { useLocation } from 'react-router-dom';
 import { navbarHeading } from '../Sidebar/utils';
+import { clearCookieAndLogOut } from '../../Firebase/AuthFunction';
 
 const drawerWidth: number = 240;
 
@@ -108,11 +110,13 @@ export default function NavbarWithComp({children}:{children:React.ReactElement})
             >
               {navbarHeading(pathname)}
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
+            <Tooltip title='Log Out'>
+            <IconButton color="inherit" onClick={clearCookieAndLogOut}>
+              <Badge color="secondary">
+                <Logout />
               </Badge>
             </IconButton>
+            </Tooltip>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

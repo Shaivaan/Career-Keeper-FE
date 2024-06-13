@@ -1,5 +1,4 @@
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -10,11 +9,15 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { loginRoute } from '../../../Components/Sidebar/utils';
 import { FormTextField } from '../../../Components/ProjectsComp/AddEditProjectModalComp/AddEditProjectModalComp';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { register_initial_values, register_validation_schema } from '../../../Components/FormsComp/InitialValues';
+import { useRef, useState } from 'react';
+import { handleSubmitUserRegister } from '../../../Firebase/AuthFunction';
+import {LoadingButton}  from '@mui/lab'
+import { useNavigate } from 'react-router-dom';
 
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 const defaultTheme = createTheme();
 
 export default function SignUp() {
@@ -45,18 +48,45 @@ export default function SignUp() {
 }
 
 const RegisterForm = ()=>{
+
+  const registerFormRef = useRef<null | FormikProps<SignUpFormValuesType>>(null);
+  const [isSubmitDisable,setIsSubmitDisable] = useState(false);
+  const handleSuccess = ()=>{
+
+  }
+
+  const handleError=(error:unknown)=>{
+    switch ((error as unknown as {code:string}).code) {
+      case 'auth/email-already-in-use':
+        (registerFormRef.current as FormikProps<SignUpFormValuesType>).setFieldError('email','Email Already Exists');
+        break;
+      case 'auth/invalid-email':     
+      //   setMessage('This email address is invalid.');
+        break;
+}
+  }
+
+  const handleLoader=(isLoading:boolean)=>{
+    setIsSubmitDisable(isLoading);
+  }
+
+  const handleFinally=()=>{
+    handleLoader(false);
+  }
+
   return  <Box sx={{ mt: 3 }}>
 
         <Formik
           initialValues={register_initial_values}
           validationSchema={register_validation_schema}
           onSubmit={(values) => {
-            // this.handleFormSubmit(values);
-            console.log(values);
+            setIsSubmitDisable(true)
+            handleSubmitUserRegister(values,handleError,handleSuccess,handleFinally)
           }}
           validateOnChange
           validateOnBlur
           enableReinitialize
+          innerRef={registerFormRef}
         >
           {({
             values,
@@ -69,7 +99,7 @@ const RegisterForm = ()=>{
             <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <FormTextField
-                autoComplete="given-name"
+                autoComplete="off"
                 name="first_name"
                 required
                 fullWidth
@@ -89,7 +119,7 @@ const RegisterForm = ()=>{
                 id="last_name"
                 label="Last Name"
                 name="last_name"
-                autoComplete="family-name"
+                autoComplete="off"
                 value={values.last_name}
                 error={(errors.last_name && touched.last_name) as boolean}
                 helperText={touched.last_name && errors.last_name}
@@ -127,15 +157,17 @@ const RegisterForm = ()=>{
               />
             </Grid>
           </Grid>
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onClick={()=>handleSubmit()}
+            loading={isSubmitDisable}
+            disabled={isSubmitDisable}
           >
             Sign Up
-          </Button>
+          </LoadingButton>
           </>
         
         )}

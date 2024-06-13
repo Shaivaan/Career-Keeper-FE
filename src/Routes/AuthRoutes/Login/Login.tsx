@@ -1,5 +1,4 @@
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -11,9 +10,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { registerRoute } from '../../../Components/Sidebar/utils';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { FormTextField } from '../../../Components/ProjectsComp/AddEditProjectModalComp/AddEditProjectModalComp';
 import { login_initial_values, loginSchema } from '../../../Components/FormsComp/InitialValues';
+import { handleSignInUser } from '../../../Firebase/AuthFunction';
+import { useRef, useState } from 'react';
+import { LoadingButton } from '@mui/lab';
+import { IconButton, InputAdornment } from '@mui/material';
+import {Visibility,VisibilityOff} from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -51,12 +56,50 @@ export default function SignIn() {
 
 
 const LoginForm = ()=>{
+
+  const navigate = useNavigate();
+  const loginFormRef = useRef(null);
+  const [isSubmitButtonDisabled,setIsSubmitButtonDisabled] = useState(false);
+  const [isPasswordVisible,setIsPasswordVisible] = useState(false);
+
+  const handleError=(error:unknown)=>{
+    const formRef = loginFormRef.current as unknown as FormikProps<LoginValueType>
+    switch ((error as unknown as {code:string}).code) {
+      case 'auth/user-not-found':
+        formRef.setFieldError('email', 'No user found with this email.');
+        break;
+      case 'auth/invalid-credential':
+        formRef.setFieldError('email', 'Incorrect Credentials.');
+        formRef.setFieldError('password', 'Incorrect Credentials.');
+        break;
+      default:
+    }
+  }
+
+  const handleSuccess =()=>{
+    navigate('/');
+  }
+
+  const handleFinally = ()=>{
+    handleSetButtonHandler(false);
+  }
+
+  const handleSetButtonHandler=(isLoading:boolean)=>{
+    setIsSubmitButtonDisabled(isLoading)
+  }
+
+  const passwordHandler=()=>{
+    setIsPasswordVisible(!isPasswordVisible);
+  }
+
+
   return   <Formik
   initialValues={login_initial_values}
   validationSchema={loginSchema}
+  innerRef={loginFormRef}
   onSubmit={(values) => {
-    // this.handleFormSubmit(values);
-    console.log(values);
+    handleSetButtonHandler(true);
+    handleSignInUser(values,handleSuccess,handleError,handleFinally)
   }}
   validateOnChange
   validateOnBlur
@@ -92,27 +135,39 @@ const LoginForm = ()=>{
     fullWidth
     name="password"
     label="Password"
-    type="password"
+    type={!isPasswordVisible ? "password" : 'text'}
     id="password"
     autoComplete="current-password"
     value={values.password}
     onChange={handleChange}
     error={(errors.password && touched.password) as boolean}
     helperText={touched.password && errors.password}
+    InputProps={{
+      endAdornment: (
+        <InputAdornment position="end">
+          <IconButton onClick={passwordHandler}>
+         {isPasswordVisible ? <Visibility /> : <VisibilityOff/>}
+        </IconButton>
+        </InputAdornment>
+      ),
+    }}
+
   />
   <FormControlLabel
     control={<Checkbox value="remember" color="primary" checked={values.is_remember} onChange={()=>setFieldValue('is_remember',!values.is_remember)}/>}
     label="Remember me"
   />
-  <Button
+  <LoadingButton
     type="submit"
     fullWidth
     variant="contained"
     sx={{ mt: 3, mb: 2 }}
     onClick={()=>handleSubmit()}
+    disabled={isSubmitButtonDisabled}
+    loading={isSubmitButtonDisabled}
   >
     Sign In
-  </Button>
+  </LoadingButton>
   <Grid container>
     <Grid item xs>
       <Link href="#" variant="body2">
