@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { firebaseAuth } from "./firebase";
+import { loginRoute } from "../Components/Sidebar/utils";
 
 const handleSubmitUserRegister = async (values: SignUpFormValuesType,handleError: (error: unknown) => void,handleSuccess: VoidReturnType,handleFinally: VoidReturnType
 ) => {
@@ -57,7 +58,7 @@ const handleSignInUser = async (values:LoginValueType, handleSuccess:VoidReturnT
 
   function clearCookieAndLogOut() {
     document.cookie = `authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict`;
-    document.location.pathname = '/login';
+    document.location.pathname = loginRoute;
   }
 
 
