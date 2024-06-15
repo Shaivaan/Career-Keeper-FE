@@ -6,21 +6,34 @@ import { MyProjectsScreen } from './Routes/MyProjects/MyProjects';
 import { authRoutesArray, loginRoute, profileRoute, projectsRoute, registerRoute, workExperience } from './Components/Sidebar/utils';
 import { MyProfile } from './Routes/MyProfile/MyProfile';
 import { WorkExpereince } from './Routes/WorkExperience/WorkExpereince';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SignIn from './Routes/AuthRoutes/Login/Login';
 import SignUp from './Routes/AuthRoutes/Register/Register';
-import { isUserLoggedIn } from './Firebase/AuthFunction';
 import { GlobalAlert } from './Components/GlobalAlert/GlobalAlert';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { firebaseAuth } from './Firebase/firebase';
 
 
 function App() {
-  const isLoggedIn = isUserLoggedIn();
+  const [isLoggedIn,setIsLoggedIn] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(()=>{
     routeHandler();
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+      handleIsLoggedIn(user)
+    });
+    return () => unsubscribe();
   })
+
+  const handleIsLoggedIn=(user:null | User)=>{
+    if(user === null){
+      setIsLoggedIn(false);
+    }else{
+      setIsLoggedIn(true);
+    }
+  }
 
   const routeHandler=()=>{
     const {pathname} = location;

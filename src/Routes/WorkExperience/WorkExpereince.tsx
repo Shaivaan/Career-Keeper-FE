@@ -156,7 +156,7 @@ const AddEditExperienceModal=({handleClose,isOpen}:WorkExpModalType)=>{
                 label="Leaving Date"
                 inputFormat="MM/DD/YYYY"
                 value={values.end_date}
-                onChange={(value:Date)=>setFieldValue('end_date',value)}
+                onChange={(value:Date | null)=>setFieldValue('end_date',value)}
                 renderInput={(params:TextFieldProps) => <FormTextField className="date_picker" {...params} error={(errors.end_date && touched.end_date) as boolean} helperText={touched.end_date && errors.end_date}/>}
                 />
 

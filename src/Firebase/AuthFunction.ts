@@ -1,6 +1,5 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { firebaseAuth, firebaseFirestore } from "./firebase";
-import { loginRoute } from "../Components/Sidebar/utils";
 import {setDoc, doc, serverTimestamp} from 'firebase/firestore';
 
 const handleSubmitUserRegister = async (values: SignUpFormValuesType,handleError: (error: unknown) => void,handleSuccess: VoidReturnType,handleFinally: VoidReturnType
@@ -9,11 +8,10 @@ const handleSubmitUserRegister = async (values: SignUpFormValuesType,handleError
   try {
     let createUser = await createUserWithEmailAndPassword(firebaseAuth,email,password);
     const user = createUser.user;
-    const token = await user.getIdToken();
        await updateProfile(createUser.user, {
         displayName: `${first_name} ${last_name}`,
       });
-      await createUserInDatabase(values, user.uid,token,handleError,handleSuccess);
+      await createUserInDatabase(values, user.uid,handleError,handleSuccess);
   } catch (error: unknown) {
     handleError(error);
   } finally {
@@ -21,7 +19,7 @@ const handleSubmitUserRegister = async (values: SignUpFormValuesType,handleError
   }
 };
 
-const createUserInDatabase = async (values: SignUpFormValuesType, uid: string,token:string,handleError: (error: unknown) => void,handleSuccess: VoidReturnType) => {
+const createUserInDatabase = async (values: SignUpFormValuesType, uid: string,handleError: (error: unknown) => void,handleSuccess: VoidReturnType) => {
   const { email, first_name, last_name } = values;
   try {
     await setDoc(doc(firebaseFirestore, 'users', uid), {
@@ -30,7 +28,6 @@ const createUserInDatabase = async (values: SignUpFormValuesType, uid: string,to
       email: email,
       createdAt: serverTimestamp(),
     });
-    setAuthTokenCookie(token);
     handleSuccess();
   } catch (error) {
     handleError(error)
@@ -42,10 +39,7 @@ const createUserInDatabase = async (values: SignUpFormValuesType, uid: string,to
 const handleSignInUser = async (values:LoginValueType, handleSuccess:VoidReturnType,handleError:(error:unknown)=>void,handleFinally:VoidReturnType) => {
     const { email, password } = values;
     try {
-      let userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
-      let user = userCredential.user;
-      const token = await user.getIdToken();
-      setAuthTokenCookie(token);
+      await signInWithEmailAndPassword(firebaseAuth, email, password);
       handleSuccess();
     } catch (error) {
         handleError(error)
@@ -56,31 +50,15 @@ const handleSignInUser = async (values:LoginValueType, handleSuccess:VoidReturnT
   };
 
 
-  const setAuthTokenCookie=(token:string) =>{
-    const oneDayTime = 24 * 60 * 60 * 1000;
-    let expirationDate = new Date();
-    expirationDate.setTime(expirationDate.getTime() + oneDayTime);
-    let expires = "expires=" + expirationDate.toUTCString();
-    document.cookie = `authToken=${token}; ${expires}; path=/; Secure; SameSite=Strict`;
-  }
-
-
-  const isUserLoggedIn=() =>{
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.startsWith('authToken=')) {
-        return true;
-      }
+  const handleLogout = async (handleSuccess:VoidFunction,handleError:VoidFunction) => {
+    try {
+      await signOut(firebaseAuth);
+      handleSuccess();
+    } catch (error) {
+      handleError();
     }
-    return false; 
-  }
-
-  function clearCookieAndLogOut() {
-    document.cookie = `authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict`;
-    document.location.pathname = loginRoute;
-  }
+  };
 
 
 
-export { handleSubmitUserRegister,handleSignInUser,isUserLoggedIn,clearCookieAndLogOut };
+export { handleSubmitUserRegister,handleSignInUser,handleLogout };

@@ -18,7 +18,9 @@ import {Logout} from '@mui/icons-material';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { useLocation } from 'react-router-dom';
 import { navbarHeading } from '../Sidebar/utils';
-import { clearCookieAndLogOut } from '../../Firebase/AuthFunction';
+import { handleLogout } from '../../Firebase/AuthFunction';
+import { useAlert } from '../../Zustand/Zustand';
+import { generalErrorMessage, logOutMessage } from '../../Zustand/Messages';
 
 const drawerWidth: number = 240;
 
@@ -74,10 +76,19 @@ const defaultTheme = createTheme();
 
 export default function NavbarWithComp({children}:{children:React.ReactElement}) {
   const {pathname} = useLocation();
+  const showAlert = useAlert();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const handleSuccess = ()=>{
+    showAlert(logOutMessage,'success');
+  }
+
+  const handleError = ()=>{
+    showAlert(generalErrorMessage,'error');
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -111,7 +122,9 @@ export default function NavbarWithComp({children}:{children:React.ReactElement})
               {navbarHeading(pathname)}
             </Typography>
             <Tooltip title='Log Out'>
-            <IconButton color="inherit" onClick={clearCookieAndLogOut}>
+            <IconButton color="inherit" 
+            onClick={()=>{handleLogout(handleSuccess,handleError)}}
+            >
               <Badge color="secondary">
                 <Logout />
               </Badge>
@@ -160,12 +173,12 @@ export default function NavbarWithComp({children}:{children:React.ReactElement})
   );
 }
 
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' by (Shivanshu Mishra)'}
-    </Typography>
-  );
-}
+// function Copyright(props: any) {
+//   return (
+//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//       {'Copyright © '}
+//       {new Date().getFullYear()}
+//       {' by (Shivanshu Mishra)'}
+//     </Typography>
+//   );
+// }
