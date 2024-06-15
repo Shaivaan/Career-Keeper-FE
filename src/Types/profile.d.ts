@@ -1,6 +1,6 @@
 interface DisplayValueWithLabelType{
-    lable:string,
-    value:string,
+    lable:NullOrString,
+    value:NullOrString,
     isUsedForNavigation?:boolean
 }
 
@@ -25,6 +25,14 @@ interface EditProfileFormIntiValueType{
     about: NullOrString
 }
 
+interface ShowCaseFormType{
+    linked_in : NullOrString,
+    github : NullOrString,
+    resume : NullOrString,
+    instagram : NullOrString,
+    youtube : NullOrString
+}
+
 type SetFieldValueType = (
     field: string,
     value: EditProfileFormIntiValueType["profile_picture"],
@@ -34,4 +42,9 @@ type SetFieldValueType = (
   interface ProfilePictureEditAvatarType{
     setFieldValue :SetFieldValueType,
     profile_picture : EditProfileFormIntiValueType['profile_picture']
+  }
+
+  type ProfileDataStateType = { showCase:ShowCaseFormType} & EditProfileFormIntiValueType
+  interface ProfileDisplaySectionType{
+    profileData : ProfileDataStateType
   }

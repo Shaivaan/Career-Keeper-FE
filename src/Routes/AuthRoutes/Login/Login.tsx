@@ -20,7 +20,7 @@ import { IconButton, InputAdornment } from '@mui/material';
 import {Visibility,VisibilityOff} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from '../../../Zustand/Zustand';
-import { loginSuccessMessage } from '../../../Zustand/Messages';
+import { loginSuccessMessage } from '../../../Zustand/Constants';
 import './Login.css';
 
 

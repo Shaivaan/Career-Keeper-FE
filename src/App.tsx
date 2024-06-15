@@ -12,17 +12,21 @@ import SignUp from './Routes/AuthRoutes/Register/Register';
 import { GlobalAlert } from './Components/GlobalAlert/GlobalAlert';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from './Firebase/firebase';
+import { useZustandStore } from './Zustand/Zustand';
 
 
 function App() {
   const [isLoggedIn,setIsLoggedIn] = useState(false);
+  const setCurrentUserData = useZustandStore((state) => state.setCurrentUserData);
+
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(()=>{
     routeHandler();
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
-      handleIsLoggedIn(user)
+      handleIsLoggedIn(user);
+      setCurrentUserData(user);
     });
     return () => unsubscribe();
   })

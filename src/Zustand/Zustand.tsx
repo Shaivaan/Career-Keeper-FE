@@ -1,5 +1,6 @@
+import { User } from 'firebase/auth';
 import { useCallback } from 'react';
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 const useZustandStore = create<Store>()((set) => ({
     alertType:'success',
@@ -7,7 +8,9 @@ const useZustandStore = create<Store>()((set) => ({
     isAlertOpen:false,
     setAlertMessage: (message:string) => set((_state) => ({ message })),
     setAlertOpen : (isOpen:boolean) => set((_state) => ({ isAlertOpen : isOpen })),
-    setAlertType : (alertType:AlertTypes) => set((_state) => ({ alertType }))
+    setAlertType : (alertType:AlertTypes) => set((_state) => ({ alertType })),
+    currentUserData : null,
+    setCurrentUserData : (currentUserData : CurrentUserDataType<User>)=>set((_state) => ({ currentUserData }))
 }))
 
 

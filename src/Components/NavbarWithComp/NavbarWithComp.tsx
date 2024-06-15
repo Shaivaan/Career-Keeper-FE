@@ -20,7 +20,7 @@ import { useLocation } from 'react-router-dom';
 import { navbarHeading } from '../Sidebar/utils';
 import { handleLogout } from '../../Firebase/AuthFunction';
 import { useAlert } from '../../Zustand/Zustand';
-import { generalErrorMessage, logOutMessage } from '../../Zustand/Messages';
+import { generalErrorMessage, logOutMessage } from '../../Zustand/Constants';
 
 const drawerWidth: number = 240;
 

@@ -16,7 +16,7 @@ import { handleSubmitUserRegister } from '../../../Firebase/AuthFunction';
 import {LoadingButton}  from '@mui/lab'
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from '../../../Zustand/Zustand';
-import { generalErrorMessage, registersuccessMessage } from '../../../Zustand/Messages';
+import { generalErrorMessage, registersuccessMessage } from '../../../Zustand/Constants';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 

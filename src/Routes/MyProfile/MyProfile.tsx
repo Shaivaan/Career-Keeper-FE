@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Avatar, Grid, IconButton, Button } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import "./MyProfile.css";
 import { EditProfileForm, EditWorkShowCaseForm } from "../../Components/MyProfilePageComp/MyProfilePageComp";
+import { firebaseFirestore } from "../../Firebase/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { useAlert, useZustandStore } from "../../Zustand/Zustand";
+import { User } from "firebase/auth";
+import { generalErrorMessage, userCollection } from "../../Zustand/Constants";
+import { edit_profile_form_initial_values, showcase_form_initial_values } from "../../Components/FormsComp/InitialValues";
+
+
 export const MyProfile = () => {
   const [profileEditModal, setProfileEditModal] = useState(false);
   const handleDeleteModalOpen = () => setProfileEditModal(true);
@@ -11,11 +19,35 @@ export const MyProfile = () => {
   const [workshowCaseEditModalOpen, setWorkshowCaseEditModalOpen] = useState(false);
   const handleShowCaseOpen = () => setWorkshowCaseEditModalOpen(true);
   const handleShowCaseClose = () => setWorkshowCaseEditModalOpen(false);
+  const showAlert = useAlert();
+  const currentUserData = useZustandStore((state) => state.currentUserData);
+  const [profilePageData,setProfilePageData] = useState<ProfileDataStateType>({...edit_profile_form_initial_values,showCase:showcase_form_initial_values});
+
+  const fetchUserData = async () => {
+    try {
+      const userDocRef = doc(firebaseFirestore, userCollection, (currentUserData as User).uid);
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setProfilePageData(userData as ProfileDataStateType);
+      } else {
+        showAlert('User Not Found!','error')
+      }
+    } catch (error) {
+      console.log(error)
+      showAlert(generalErrorMessage,'error')
+    }
+  };
+
+  useEffect(()=>{
+    fetchUserData();
+  },[])
 
   return (
     <Box className="global_uniform_vertical_style">
-      <ProfileDisplay />
-      <PersonalInformation handleEditProfileModalOpen={handleDeleteModalOpen} />
+      <ProfileDisplay profileData={profilePageData}/>
+      <PersonalInformation handleEditProfileModalOpen={handleDeleteModalOpen} profileData={profilePageData}/>
       <WorkShowCase  handleOpenWorkShowCaseModalOpen={handleShowCaseOpen}/>
       <EditProfileForm
         isOpen={profileEditModal}
@@ -51,17 +83,18 @@ const DisplayValueWithLabel = ({
   );
 };
 
-const ProfileDisplay = () => {
+const ProfileDisplay = ({profileData}:ProfileDisplaySectionType) => {
+  const {first_name,last_name,email,profile_picture} = profileData;
   return (
     <Box className="profileDisplayParent gridBackground">
-      <Avatar className="avatar_style" />
+      <Avatar className="avatar_style" src={profile_picture as unknown as undefined}/>
       <Box
         className="global_uniform_vertical_style"
         style={{ rowGap: "0.2rem" }}
       >
-        <Box className="nameHead">Jack Adams</Box>
+        <Box className="nameHead">{first_name} {last_name}</Box>
         <Box className="worker">Web Developer</Box>
-        <Box>Email</Box>
+        <Box>{email}</Box>
       </Box>
     </Box>
   );
@@ -73,7 +106,9 @@ const ProfileDisplay = () => {
 
 const PersonalInformation = ({
   handleEditProfileModalOpen,
-}: PersonalInformationType) => {
+  profileData
+}: PersonalInformationType & ProfileDisplaySectionType) => {
+  const {first_name,last_name,email,about} = profileData
   return (
     <Box
       className="gridBackground global_uniform_vertical_style"
@@ -87,16 +122,16 @@ const PersonalInformation = ({
       </Box>
       <Grid container style={{ rowGap: "1.5rem" }}>
         <Grid item lg={3} sm={6} xs={12}>
-          <DisplayValueWithLabel lable="First Name" value="Shivanshu" />
+          <DisplayValueWithLabel lable="First Name" value={first_name} />
         </Grid>
         <Grid item lg={9} sm={6} xs={12}>
-          <DisplayValueWithLabel lable="Last Name" value="Shivanshu" />
+          <DisplayValueWithLabel lable="Last Name" value={last_name} />
         </Grid>
         <Grid item lg={3} sm={6} xs={12}>
-          <DisplayValueWithLabel lable="Email" value="Shivanshu" />
+          <DisplayValueWithLabel lable="Email" value={email} />
         </Grid>
         <Grid item lg={9} sm={6} xs={12}>
-          <DisplayValueWithLabel lable="About Me" value="Shivanshu" />
+          <DisplayValueWithLabel lable="About Me" value={about} />
         </Grid>
       </Grid>
     </Box>

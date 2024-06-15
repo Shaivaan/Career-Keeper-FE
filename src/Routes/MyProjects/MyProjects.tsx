@@ -11,7 +11,7 @@ import {
   CheckBox,
   Close,
 } from "@mui/icons-material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {  tech_used_array } from "./utils";
 import { Formik } from "formik";
 import {
@@ -39,6 +39,9 @@ export const MyProjectsScreen = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleDeleteModalOpen = () => setIsDeleteModalOpen(true);
   const handleDeleteModalClose = () => setIsDeleteModalOpen(false);
+
+
+
 
   return (
     <Box>
