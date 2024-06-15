@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import SignIn from './Routes/AuthRoutes/Login/Login';
 import SignUp from './Routes/AuthRoutes/Register/Register';
 import { isUserLoggedIn } from './Firebase/AuthFunction';
+import { GlobalAlert } from './Components/GlobalAlert/GlobalAlert';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
 
   return (
     <>
+    <GlobalAlert/>
     {isLoggedIn ? <LoggedInRoutes/> : <LoggedOutRoutes/>}
     </>
   )

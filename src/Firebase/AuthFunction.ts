@@ -6,7 +6,11 @@ const handleSubmitUserRegister = async (values: SignUpFormValuesType,handleError
 ) => {
   const { email, password, first_name, last_name } = values;
   try {
-    let createUser = await createUserWithEmailAndPassword(firebaseAuth,email,password);await updateProfile(createUser.user, {
+    let createUser = await createUserWithEmailAndPassword(firebaseAuth,email,password);
+    const user = createUser.user;
+    const token = await user.getIdToken();
+    setAuthTokenCookie(token);
+       await updateProfile(createUser.user, {
       displayName: `${first_name} ${last_name}`,
     });
     handleSuccess();

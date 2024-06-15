@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { registerRoute } from '../../../Components/Sidebar/utils';
+import { projectsRoute, registerRoute } from '../../../Components/Sidebar/utils';
 import { Formik, FormikProps } from 'formik';
 import { FormTextField } from '../../../Components/ProjectsComp/AddEditProjectModalComp/AddEditProjectModalComp';
 import { login_initial_values, loginSchema } from '../../../Components/FormsComp/InitialValues';
@@ -19,7 +19,9 @@ import { LoadingButton } from '@mui/lab';
 import { IconButton, InputAdornment } from '@mui/material';
 import {Visibility,VisibilityOff} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
+import { useZustandStore } from '../../../Zustand/Zustand';
+import { loginSuccessMessage } from '../../../Zustand/Messages';
+import './Login.css';
 
 
 const defaultTheme = createTheme();
@@ -61,6 +63,10 @@ const LoginForm = ()=>{
   const loginFormRef = useRef(null);
   const [isSubmitButtonDisabled,setIsSubmitButtonDisabled] = useState(false);
   const [isPasswordVisible,setIsPasswordVisible] = useState(false);
+  const setAlertOpen = useZustandStore((state) => state.setAlertOpen);
+  const setAlertMessage = useZustandStore((state) => state.setAlertMessage);
+
+
 
   const handleError=(error:unknown)=>{
     const formRef = loginFormRef.current as unknown as FormikProps<LoginValueType>
@@ -77,7 +83,9 @@ const LoginForm = ()=>{
   }
 
   const handleSuccess =()=>{
-    navigate('/');
+    setAlertMessage(loginSuccessMessage);
+    setAlertOpen(true);
+    navigate(projectsRoute);
   }
 
   const handleFinally = ()=>{
@@ -175,7 +183,7 @@ const LoginForm = ()=>{
       </Link>
     </Grid>
     <Grid item>
-      <Link href={registerRoute} variant="body2">
+      <Link className='link_cursor' onClick={()=>navigate(registerRoute)} variant="body2">
         {"Don't have an account? Sign Up"}
       </Link>
     </Grid>
