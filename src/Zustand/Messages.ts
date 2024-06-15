@@ -1,3 +1,4 @@
 const loginSuccessMessage = 'Logged In Successfully';
 const registersuccessMessage = 'Registered Successfully';
-export {loginSuccessMessage,registersuccessMessage}
+const generalErrorMessage = 'Something Went Wrong';
+export {loginSuccessMessage,registersuccessMessage,generalErrorMessage}

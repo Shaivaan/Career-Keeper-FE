@@ -15,8 +15,8 @@ import { useRef, useState } from 'react';
 import { handleSubmitUserRegister } from '../../../Firebase/AuthFunction';
 import {LoadingButton}  from '@mui/lab'
 import { useNavigate } from 'react-router-dom';
-import { useZustandStore } from '../../../Zustand/Zustand';
-import { registersuccessMessage } from '../../../Zustand/Messages';
+import { useAlert } from '../../../Zustand/Zustand';
+import { generalErrorMessage, registersuccessMessage } from '../../../Zustand/Messages';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -53,14 +53,12 @@ export default function SignUp() {
 
 const RegisterForm = ()=>{
   const navigate = useNavigate();
+  const showAlert = useAlert();
   const registerFormRef = useRef<null | FormikProps<SignUpFormValuesType>>(null);
   const [isSubmitDisable,setIsSubmitDisable] = useState(false);
   const [isPasswordVisible,setIsPasswordVisible] = useState(false);
-  const setAlertOpen = useZustandStore((state) => state.setAlertOpen);
-  const setAlertMessage = useZustandStore((state) => state.setAlertMessage);
   const handleSuccess = ()=>{
-    setAlertMessage(registersuccessMessage);
-    setAlertOpen(true);
+    showAlert(registersuccessMessage,'success');
     navigate(projectsRoute)
   }
 
@@ -70,9 +68,12 @@ const RegisterForm = ()=>{
         (registerFormRef.current as FormikProps<SignUpFormValuesType>).setFieldError('email','Email Already Exists');
         break;
       case 'auth/invalid-email':     
-      //   setMessage('This email address is invalid.');
-        break;
-}
+      (registerFormRef.current as FormikProps<SignUpFormValuesType>).setFieldError('email','Email Invalid');
+      break;
+      default:
+      showAlert(generalErrorMessage,'error');
+      break;
+}     
   }
 
   const handleLoader=(isLoading:boolean)=>{

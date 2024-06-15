@@ -1,23 +1,39 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { firebaseAuth } from "./firebase";
+import { firebaseAuth, firebaseFirestore } from "./firebase";
 import { loginRoute } from "../Components/Sidebar/utils";
+import {setDoc, doc, serverTimestamp} from 'firebase/firestore';
 
 const handleSubmitUserRegister = async (values: SignUpFormValuesType,handleError: (error: unknown) => void,handleSuccess: VoidReturnType,handleFinally: VoidReturnType
 ) => {
-  const { email, password, first_name, last_name } = values;
+  const { email, password,first_name,last_name } = values;
   try {
     let createUser = await createUserWithEmailAndPassword(firebaseAuth,email,password);
     const user = createUser.user;
     const token = await user.getIdToken();
-    setAuthTokenCookie(token);
        await updateProfile(createUser.user, {
-      displayName: `${first_name} ${last_name}`,
-    });
-    handleSuccess();
+        displayName: `${first_name} ${last_name}`,
+      });
+      await createUserInDatabase(values, user.uid,token,handleError,handleSuccess);
   } catch (error: unknown) {
     handleError(error);
   } finally {
     handleFinally();
+  }
+};
+
+const createUserInDatabase = async (values: SignUpFormValuesType, uid: string,token:string,handleError: (error: unknown) => void,handleSuccess: VoidReturnType) => {
+  const { email, first_name, last_name } = values;
+  try {
+    await setDoc(doc(firebaseFirestore, 'users', uid), {
+      firstName: first_name,
+      lastName: last_name,
+      email: email,
+      createdAt: serverTimestamp(),
+    });
+    setAuthTokenCookie(token);
+    handleSuccess();
+  } catch (error) {
+    handleError(error)
   }
 };
 

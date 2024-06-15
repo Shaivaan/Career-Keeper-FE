@@ -19,7 +19,7 @@ import { LoadingButton } from '@mui/lab';
 import { IconButton, InputAdornment } from '@mui/material';
 import {Visibility,VisibilityOff} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useZustandStore } from '../../../Zustand/Zustand';
+import { useAlert, useZustandStore } from '../../../Zustand/Zustand';
 import { loginSuccessMessage } from '../../../Zustand/Messages';
 import './Login.css';
 
@@ -63,9 +63,7 @@ const LoginForm = ()=>{
   const loginFormRef = useRef(null);
   const [isSubmitButtonDisabled,setIsSubmitButtonDisabled] = useState(false);
   const [isPasswordVisible,setIsPasswordVisible] = useState(false);
-  const setAlertOpen = useZustandStore((state) => state.setAlertOpen);
-  const setAlertMessage = useZustandStore((state) => state.setAlertMessage);
-
+  const showAlert = useAlert();
 
 
   const handleError=(error:unknown)=>{
@@ -83,8 +81,7 @@ const LoginForm = ()=>{
   }
 
   const handleSuccess =()=>{
-    setAlertMessage(loginSuccessMessage);
-    setAlertOpen(true);
+    showAlert(loginSuccessMessage,'success')
     navigate(projectsRoute);
   }
 
