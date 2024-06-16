@@ -4,7 +4,7 @@ interface DisplayValueWithLabelType{
     isUsedForNavigation?:boolean
 }
 
-interface EditProfileFormType{
+interface ModalOpenAndCloseTypes{
     isOpen:boolean,
     handleClose:()=>void
 }
@@ -23,6 +23,16 @@ interface EditProfileFormIntiValueType{
     profile_picture:FileType,
     email : NullOrString,
     about: NullOrString
+}
+
+interface EditWorkShowCaseFormType{
+    workShowCaseData : ShowCaseFormType
+    updateProfileData:(updates: ShowCaseFormType) => Promise<void>
+}
+
+interface EditProfileFormType{
+    profileFormInitialValues : EditProfileFormIntiValueType
+    updateProfileData:(updates: EditProfileFormIntiValueType) => Promise<void>
 }
 
 interface ShowCaseFormType{

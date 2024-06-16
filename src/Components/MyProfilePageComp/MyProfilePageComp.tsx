@@ -7,15 +7,15 @@ import { FormTextField, HiddenInput } from "../ProjectsComp/AddEditProjectModalC
 import { useRef } from "react";
 import { Close, Edit } from "@mui/icons-material";
 
-const EditProfileForm = ({ isOpen, handleClose }: EditProfileFormType) => {
+const EditProfileForm = ({updateProfileData, isOpen, handleClose,profileFormInitialValues=edit_profile_form_initial_values }: ModalOpenAndCloseTypes & ProfileDisplaySectionType & EditProfileFormType) => {
+
     return (
       <GeneralModalParent handleClose={handleClose} isOpen={isOpen}>
         <Formik
-          initialValues={edit_profile_form_initial_values}
+          initialValues={profileFormInitialValues}
           validationSchema={edit_profile_form_validation_schema}
           onSubmit={(values) => {
-            // this.handleFormSubmit(values);
-            console.log(values);
+            updateProfileData(values);
           }}
           validateOnChange
           validateOnBlur
@@ -145,15 +145,14 @@ const IconHandler = ({ isSelected }: { isSelected: boolean }) => {
   };
 
 
-  const EditWorkShowCaseForm = ({ isOpen, handleClose }: EditProfileFormType) => {
+  const EditWorkShowCaseForm = ({updateProfileData, isOpen, handleClose,workShowCaseData =  showcase_form_initial_values}: ModalOpenAndCloseTypes & EditWorkShowCaseFormType) => {
     return (
       <GeneralModalParent handleClose={handleClose} isOpen={isOpen}>
         <Formik
-          initialValues={showcase_form_initial_values}
+          initialValues={workShowCaseData}
           validationSchema={showcaseFormValidationSchema}
           onSubmit={(values) => {
-            // this.handleFormSubmit(values);
-            console.log(values);
+            updateProfileData(values)
           }}
           validateOnChange
           validateOnBlur

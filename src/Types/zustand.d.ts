@@ -9,4 +9,6 @@ interface Store {
     setAlertType:(alertType:AlertTypes) => void
     currentUserData:CurrentUserDataType
     setCurrentUserData:(alertType:CurrentUserDataType) => void
+    isApiProcessing:boolean
+    setIsApiProcessing :(isApiProcessing:boolean) => void
   }

@@ -1,12 +1,16 @@
 import { AddCircleOutline } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
+import { useZustandStore } from "../../Zustand/Zustand";
+import { LoadingButton } from "@mui/lab";
 
 export const SubmitAndCancel = ({handleClose,handleSubmit}:SubmitAndCancelType) => {
+  const isApiProcessing = useZustandStore((state) => state.isApiProcessing);
+
   return (
     <>
-      <Button variant="contained" size="large" onClick={() => handleSubmit()}>
+      <LoadingButton variant="contained" size="large" onClick={() => handleSubmit()} disabled={isApiProcessing} loading={isApiProcessing}>
         Add
-      </Button>
+      </LoadingButton>
       <Button variant="outlined" size="large" onClick={handleClose}>
         Cancel
       </Button>

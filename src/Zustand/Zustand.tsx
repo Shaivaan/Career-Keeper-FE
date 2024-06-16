@@ -3,14 +3,21 @@ import { useCallback } from 'react';
 import { create } from 'zustand';
 
 const useZustandStore = create<Store>()((set) => ({
+    // Messages
     alertType:'success',
     message : '',
     isAlertOpen:false,
     setAlertMessage: (message:string) => set((_state) => ({ message })),
     setAlertOpen : (isOpen:boolean) => set((_state) => ({ isAlertOpen : isOpen })),
     setAlertType : (alertType:AlertTypes) => set((_state) => ({ alertType })),
+
+    // User
     currentUserData : null,
-    setCurrentUserData : (currentUserData : CurrentUserDataType<User>)=>set((_state) => ({ currentUserData }))
+    setCurrentUserData : (currentUserData : CurrentUserDataType<User>)=>set((_state) => ({ currentUserData })),
+
+    // ButtonLoad
+    isApiProcessing:false,
+    setIsApiProcessing : (isApiProcessing :boolean)=>set((_state) => ({ isApiProcessing }))
 }))
 
 
@@ -27,4 +34,13 @@ const useAlert = () => {
     return handleAlertOpen;
 };
 
-export {useZustandStore,useAlert};
+const useButtonLoader = () => {
+    const setIsApiProcessing = useZustandStore((state) => state.setIsApiProcessing);
+    const handleButtonLoading = useCallback((isApiProcessing: boolean) => {
+        setIsApiProcessing(isApiProcessing);
+    }, [setIsApiProcessing]);
+
+    return handleButtonLoading;
+};
+
+export {useZustandStore,useAlert,useButtonLoader};
