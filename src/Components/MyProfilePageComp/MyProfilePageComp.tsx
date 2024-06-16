@@ -1,11 +1,12 @@
 import { Formik } from "formik";
 import { GeneralModalParent } from "../GeneralModalParent/GeneralModalParent";
 import { edit_profile_form_initial_values, edit_profile_form_validation_schema, showcaseFormValidationSchema, showcase_form_initial_values } from "../FormsComp/InitialValues";
-import { Avatar, Box, IconButton } from "@mui/material";
+import { Autocomplete, Avatar, Box, Checkbox, IconButton } from "@mui/material";
 import { SubmitAndCancel } from "../FormsComp/SubmitAndCancel";
 import { FormTextField, HiddenInput } from "../ProjectsComp/AddEditProjectModalComp/AddEditProjectModalComp";
 import { useRef } from "react";
 import { Close, Edit } from "@mui/icons-material";
+import { professionObject, professions } from "../../Routes/MyProjects/utils";
 
 const EditProfileForm = ({updateProfileData, isOpen, handleClose,profileFormInitialValues=edit_profile_form_initial_values }: ModalOpenAndCloseTypes & ProfileDisplaySectionType & EditProfileFormType) => {
 
@@ -71,6 +72,46 @@ const EditProfileForm = ({updateProfileData, isOpen, handleClose,profileFormInit
                   error={(errors.email && touched.email) as boolean}
                   helperText={touched.email && errors.email}
                 />
+                <Autocomplete
+                    multiple
+                    options={professions}
+                    disableCloseOnSelect
+                    groupBy={(option) => option.category}
+                    getOptionLabel={(option) =>
+                      typeof option === 'string' ? option : (option as ProfessionType).role
+                    }
+                    value={values.profession}
+                    onChange={(_event, newValue) => {
+                      setFieldValue(
+                        'profession',
+                        newValue.map((value) =>
+                          typeof value === 'string'
+                            ? professionObject('Frontend', value)
+                            : value
+                        )
+                      );
+                    }}
+                    renderOption={(props, option, { selected }) => (
+                      <li {...props}>
+                        <Checkbox
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
+                        {typeof option === 'string' ? option : (option as ProfessionType).role}
+                      </li>
+                    )}
+                    freeSolo
+                    renderInput={(params) => (
+                      <FormTextField
+                      {...params}
+                        placeholder="Profession"
+                        label="Profession"
+                        fullWidth
+                        error={(errors.profession && touched.profession) as boolean}
+                        helperText={touched.profession && errors.profession}
+                      />
+                    )}
+            />
                 <FormTextField
                   placeholder="About"
                   label="About"
@@ -195,6 +236,15 @@ const IconHandler = ({ isSelected }: { isSelected: boolean }) => {
                   onChange={handleChange}
                   error={(errors.resume && touched.resume) as boolean}
                   helperText={touched.resume && errors.resume}
+                />
+                <FormTextField
+                  placeholder="Cover Letter"
+                  label="Cover Letter(Optional)"
+                  value={values.cover_letter}
+                  name="cover_letter"
+                  onChange={handleChange}
+                  error={(errors.cover_letter && touched.cover_letter) as boolean}
+                  helperText={touched.cover_letter && errors.cover_letter}
                 />
                 <FormTextField
                   placeholder="Instagram"

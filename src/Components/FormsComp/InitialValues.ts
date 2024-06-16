@@ -45,7 +45,8 @@ const add_edit_project_schema = Yup.object().shape({
     last_name : null,
     profile_picture:null,
     email : null,
-    about: null
+    about: null,
+    profession:[]
   }
 
   const edit_profile_form_validation_schema = Yup.object().shape({
@@ -65,6 +66,15 @@ const add_edit_project_schema = Yup.object().shape({
         }
         return value instanceof File;
     }),
+    profession: Yup.array()
+    .of(
+      Yup.object({
+        category: Yup.string().oneOf(['Frontend', 'Backend', 'Engineer']).required(),
+        role: Yup.string().required(),
+      })
+    )
+    .min(1, 'At least one profession must be selected')
+    .required('Profession is required'),
     
   });
 
@@ -75,7 +85,8 @@ const add_edit_project_schema = Yup.object().shape({
     github : null,
     resume : null,
     instagram : null,
-    youtube : null
+    youtube : null,
+    cover_letter : null
   }
 
   const showcaseFormValidationSchema = Yup.object().shape({

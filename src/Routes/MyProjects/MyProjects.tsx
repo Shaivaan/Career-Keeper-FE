@@ -28,8 +28,8 @@ import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import { GeneralModalParent } from "../../Components/GeneralModalParent/GeneralModalParent";
 import { AddProjectButton, SubmitAndCancel } from "../../Components/FormsComp/SubmitAndCancel";
 
-const icon = <CheckBoxOutlineBlank fontSize="small" />;
-const checkedIcon = <CheckBox fontSize="small" />;
+export const icon = <CheckBoxOutlineBlank fontSize="small" />;
+export const checkedIcon = <CheckBox fontSize="small" />;
 
 export const MyProjectsScreen = () => {
   const [open, setOpen] = useState(false);
@@ -201,6 +201,7 @@ function EditProjectModal({ isOpen, handleClose }: EditModalType) {
                   {option}
                 </li>
               )}
+              freeSolo
               renderInput={(params) => (
                 <FormTextField
                   placeholder="Tech Used"

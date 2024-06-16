@@ -4,6 +4,10 @@ interface DisplayValueWithLabelType{
     isUsedForNavigation?:boolean
 }
 
+interface LinkHandlerType{
+    navLink:NullOrString
+}
+
 interface ModalOpenAndCloseTypes{
     isOpen:boolean,
     handleClose:()=>void
@@ -23,6 +27,7 @@ interface EditProfileFormIntiValueType{
     profile_picture:FileType,
     email : NullOrString,
     about: NullOrString
+    profession : string[] | []
 }
 
 interface EditWorkShowCaseFormType{
@@ -40,7 +45,8 @@ interface ShowCaseFormType{
     github : NullOrString,
     resume : NullOrString,
     instagram : NullOrString,
-    youtube : NullOrString
+    youtube : NullOrString,
+    cover_letter : NullOrString
 }
 
 type SetFieldValueType = (

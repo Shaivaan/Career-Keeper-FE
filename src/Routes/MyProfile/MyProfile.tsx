@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Avatar, Grid, IconButton, Button } from "@mui/material";
+import { Box, Avatar, Grid, IconButton, Button, Chip } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import "./MyProfile.css";
 import { EditProfileForm, EditWorkShowCaseForm } from "../../Components/MyProfilePageComp/MyProfilePageComp";
@@ -102,7 +102,8 @@ export const MyProfile = () => {
           last_name:profilePageData.last_name,
           profile_picture:profilePageData.profile_picture,
           email:profilePageData.email,
-          about:profilePageData.about
+          about:profilePageData.about,
+          profession:profilePageData.profession
         }}
       />
       <EditWorkShowCaseForm updateProfileData={(values:ShowCaseFormType)=>editWorkFlow(values)} workShowCaseData={profilePageData.showCase} handleClose={handleShowCaseClose} isOpen={workshowCaseEditModalOpen} />
@@ -121,22 +122,29 @@ const DisplayValueWithLabel = ({
       {!isUsedForNavigation ? (
         <Box>{value}</Box>
       ) : (
-        <Button
-          variant="text"
-          color="primary"
-          style={{ width: "5rem", textTransform: "none" }}
-          target="_blank"
-          href={value as string}
-        >
-          Visit
-        </Button>
+        <LinkHandler navLink={value}/>
       )}
     </Box>
   );
 };
 
+const LinkHandler=({navLink}:LinkHandlerType)=>{
+  const canNavigate = navLink !== null && navLink !== '';
+  return <>
+     {canNavigate ? <Button
+          variant="text"
+          color="primary"
+          style={{ width: "5rem", textTransform: "none" }}
+          target="_blank"
+          href={navLink as string}
+        >
+          Visit
+        </Button> : <Chip label='No Link Attached' style={{width:'10rem'}}/> }
+  </>
+}
+
 const ProfileDisplay = ({profileData}:ProfileDisplaySectionType) => {
-  const {first_name,last_name,email,profile_picture} = profileData;
+  const {first_name,last_name,email,profile_picture,profession} = profileData;
   return (
     <Box className="profileDisplayParent gridBackground">
       <Avatar className="avatar_style" src={profile_picture as unknown as undefined}/>
@@ -145,7 +153,9 @@ const ProfileDisplay = ({profileData}:ProfileDisplaySectionType) => {
         style={{ rowGap: "0.2rem" }}
       >
         <Box className="nameHead">{first_name} {last_name}</Box>
-        <Box className="worker">Web Developer</Box>
+        <Box>
+          {profession && profession.map(((eachProfession)=><Chip style={{marginRight:'0.5rem'}} label={(eachProfession as unknown as  ProfessionType).role}/>))}
+        </Box>
         <Box>{email}</Box>
       </Box>
     </Box>
@@ -191,7 +201,7 @@ const PersonalInformation = ({
 };
 
 const WorkShowCase = ({profileData,handleOpenWorkShowCaseModalOpen}:WorkShowCaseFormType & ProfileDisplaySectionType) => {
-  const {showCase:{github,instagram,linked_in,resume,youtube}} = profileData;
+  const {showCase:{github,instagram,linked_in,resume,youtube,cover_letter}} = profileData;
   return (
     <Box
       className="gridBackground global_uniform_vertical_style"
@@ -220,19 +230,26 @@ const WorkShowCase = ({profileData,handleOpenWorkShowCaseModalOpen}:WorkShowCase
         </Grid>
         <Grid item lg={3} sm={6} xs={12}>
           <DisplayValueWithLabel
+            lable="Cover Letter"
+            value={cover_letter}
+            isUsedForNavigation={true}
+          />
+        </Grid>
+        <Grid item lg={9} sm={6} xs={12}>
+          <DisplayValueWithLabel
             lable="Github"
             value={github}
             isUsedForNavigation={true}
           />
         </Grid>
-        <Grid item lg={9} sm={6} xs={12}>
+        <Grid item lg={3} sm={6} xs={12}>
           <DisplayValueWithLabel
             lable="Youtube"
             value={youtube}
             isUsedForNavigation={true}
           />
         </Grid>
-        <Grid item lg={3} sm={6} xs={12}>
+        <Grid item lg={9} sm={6} xs={12}>
           <DisplayValueWithLabel
             lable="Instagram"
             value={instagram}

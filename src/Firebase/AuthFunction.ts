@@ -12,7 +12,8 @@ const userProfileInitialData  = {
     github : null,
     resume : null,
     instagram : null,
-    youtube : null
+    youtube : null,
+    cover_letter : null
   }
 }
 
