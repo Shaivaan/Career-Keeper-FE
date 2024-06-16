@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { firebaseAuth, firebaseFirestore } from "./firebase";
 import {setDoc, doc, serverTimestamp} from 'firebase/firestore';
 import { userCollection } from "../Zustand/Constants";

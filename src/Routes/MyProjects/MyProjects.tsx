@@ -11,7 +11,7 @@ import {
   CheckBox,
   Close,
 } from "@mui/icons-material";
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import {  tech_used_array } from "./utils";
 import { Formik } from "formik";
 import {
