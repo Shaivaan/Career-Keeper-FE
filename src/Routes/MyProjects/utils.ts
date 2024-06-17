@@ -1,3 +1,4 @@
+import moment from "moment";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -183,4 +184,11 @@ const style = {
     professionObject('Engineer', 'DevSecOps Engineer')
   ];
 
-  export {style,tech_used_array,professions,professionObject}
+  function formatFirestoreTimestamp(firestoreTimestamp: FirestoreTimestamp): string {
+    const date = new Date(firestoreTimestamp.seconds * 1000);
+    const momentDate = moment(date);
+    const formattedDate = momentDate.format('DD MMMM, YYYY');
+    return formattedDate;
+  }
+
+  export {style,tech_used_array,professions,professionObject,formatFirestoreTimestamp}
