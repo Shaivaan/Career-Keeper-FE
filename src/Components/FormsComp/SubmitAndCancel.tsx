@@ -3,13 +3,13 @@ import { Box, Button } from "@mui/material";
 import { useZustandStore } from "../../Zustand/Zustand";
 import { LoadingButton } from "@mui/lab";
 
-export const SubmitAndCancel = ({handleClose,handleSubmit}:SubmitAndCancelType) => {
+export const SubmitAndCancel = ({handleClose,handleSubmit,submitButtonTitle='Add'}:SubmitAndCancelType) => {
   const isApiProcessing = useZustandStore((state) => state.isApiProcessing);
 
   return (
     <>
       <LoadingButton variant="contained" size="large" onClick={() => handleSubmit()} disabled={isApiProcessing} loading={isApiProcessing}>
-        Add
+        {submitButtonTitle}
       </LoadingButton>
       <Button variant="outlined" size="large" onClick={handleClose}>
         Cancel

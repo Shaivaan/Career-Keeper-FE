@@ -13,8 +13,108 @@ const style = {
   };
 
 
-  const tech_used_array = ['Git','HTML','CSS', 'Typescript', 'NodeJS','Github','MongoDB','React'];
-  const professionObject = (category:RoleType,role:string)=> {return {category,role}}
+  const tech_used_array = [
+    // Version Control
+    'Git',
+    'Github',
+    'GitLab',
+    'Bitbucket',
+  
+    // Frontend
+    'HTML',
+    'CSS',
+    'JavaScript',
+    'Typescript',
+    'React',
+    'Vue.js',
+    'Angular',
+    'Svelte',
+    'Bootstrap',
+    'Tailwind CSS',
+    'Material-UI',
+    'Chakra UI',
+  
+    // Backend
+    'NodeJS',
+    'Express',
+    'Django',
+    'Flask',
+    'Ruby on Rails',
+    'Spring Boot',
+    'ASP.NET',
+    'Koa',
+    'NestJS',
+  
+    // Databases
+    'MongoDB',
+    'MySQL',
+    'PostgreSQL',
+    'SQLite',
+    'Firebase Firestore',
+    'Redis',
+    'Cassandra',
+    'Elasticsearch',
+  
+    // DevOps & CI/CD
+    'Docker',
+    'Kubernetes',
+    'Jenkins',
+    'Travis CI',
+    'CircleCI',
+    'GitHub Actions',
+    'Terraform',
+    'Ansible',
+  
+    // Cloud Services
+    'AWS',
+    'Azure',
+    'Google Cloud Platform',
+    'Heroku',
+    'Netlify',
+    'Vercel',
+    'DigitalOcean',
+  
+    // Testing
+    'Jest',
+    'Mocha',
+    'Chai',
+    'Cypress',
+    'Puppeteer',
+    'Selenium',
+    'Postman',
+  
+    // Mobile Development
+    'React Native',
+    'Flutter',
+    'Ionic',
+    'Swift',
+    'Kotlin',
+    'Objective-C',
+  
+    // Miscellaneous
+    'GraphQL',
+    'REST',
+    'Webpack',
+    'Babel',
+    'ESLint',
+    'Prettier',
+    'Redux',
+    'MobX',
+    'Next.js',
+    'Nuxt.js',
+    'Gatsby',
+    'Electron',
+    'Serverless',
+    'Apache Kafka',
+    'RabbitMQ',
+    'Nginx',
+    'Apache HTTP Server',
+    'Jupyter',
+    'TensorFlow',
+    'PyTorch',
+    'Scikit-learn'
+  ];
+    const professionObject = (category:RoleType,role:string)=> {return {category,role}}
   const professions = [
     // Frontend Technologies
     professionObject('Frontend', 'React'),

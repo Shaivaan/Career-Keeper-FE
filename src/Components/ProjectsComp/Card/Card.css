@@ -13,3 +13,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.project_image_container{
+    width: 100%;
+    height: 250px;
+}
+
+.card_title_height{
+    height: 3.9rem;
+}
+
+
+.card_desc_height{
+    height: 3.9rem;
+}

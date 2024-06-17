@@ -1,8 +1,8 @@
 import {initializeApp} from 'firebase/app';
 import {getAuth} from 'firebase/auth'
-import "firebase/firestore";
 import {getFirestore} from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+// import "firebase/firestore";
 const {VITE_API_KEY,VITE_AUTH_DOMAIN,VITE_PROJECT_ID,VITE_STORAGE_BUCKET,VITE_MESSAGING_SENDER_ID,VITE_APP_ID} = import.meta.env
 
 const firebaseConfig = {

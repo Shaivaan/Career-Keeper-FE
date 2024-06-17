@@ -10,6 +10,8 @@ import { User } from "firebase/auth";
 import { changesSavedMessage, generalErrorMessage, profilePictureCollectionStorage, userCollection } from "../../Zustand/Constants";
 import { edit_profile_form_initial_values, showcase_form_initial_values } from "../../Components/FormsComp/InitialValues";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {v4 as uuidv4 } from 'uuid'
+
 
 
 export const MyProfile = () => {
@@ -59,12 +61,11 @@ export const MyProfile = () => {
   const uploadFileAndUpdateProfilePicture = async (updates: EditProfileFormIntiValueType) => {
     const {profile_picture} = updates;
     try {
-      const storageRef = ref(firebaseStorage, `${profilePictureCollectionStorage}/${(currentUserData as User).uid}/${(profile_picture as File).name}`);
+      const storageRef = ref(firebaseStorage, `${profilePictureCollectionStorage}/${(currentUserData as User).uid}/${(profile_picture as File).name}_${uuidv4()}`);
       await uploadBytes(storageRef, profile_picture as File);
       const fileURL = await getDownloadURL(storageRef);
       await updateProfileData({...updates,profile_picture:fileURL});
     } catch (error) {
-      console.log('Error uploading file and updating profile picture:', error);
       showAlert(generalErrorMessage,'error')
     }
   };

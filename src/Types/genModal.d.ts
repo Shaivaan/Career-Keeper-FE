@@ -7,4 +7,5 @@ interface GeneralModalParentType{
 interface SubmitAndCancelType{
     handleClose:()=>void
     handleSubmit:()=>void
+    submitButtonTitle?:string
 }

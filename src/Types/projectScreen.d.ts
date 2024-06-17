@@ -3,6 +3,9 @@ type FileType = string | File | null
 interface EditModalType{
     isOpen:boolean,
     handleClose : ()=>void
+    isEditState : boolean
+    addEditFunction:(values:AddProjectInitialValueType)=>void
+    projectFormInitialValues: AddProjectInitialValueType
 }
 
 interface AddProjectButtonParent{
@@ -37,8 +40,22 @@ interface UploadImageBoxType{
 interface DeleteModalType {
     isOpen:boolean
     closeModal : ()=>void
+    onClickYes : ()=>void
 }
 
 interface CardParentCompType{
-    handleDeleteModalOpen:()=>void
+    projectData:AddProjectInitialValueType[] | []
+}
+
+interface CardGenType{
+    handleDeleteModalOpen:(project_id:string)=>void
+    handleEditState:(isEditState:boolean,projectFormInitialValues?:AddProjectInitialValueType)=>void
+}
+
+interface EachCardType{
+    cardDetails: AddProjectInitialValueType
+}
+
+interface NoProjectsAddedType{
+    isLoading : boolean
 }
