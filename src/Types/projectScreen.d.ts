@@ -58,4 +58,5 @@ interface EachCardType{
 
 interface NoProjectsAddedType{
     isLoading : boolean
+    fallBackText?:string
 }

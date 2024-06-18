@@ -1,13 +1,11 @@
 import {
   Box,
-  CircularProgress,
   Grid,
 } from "@mui/material";
 import "./MyProjects.css";
 import {
   CheckBoxOutlineBlank,
   CheckBox,
-  TurnSlightRight,
 } from "@mui/icons-material";
 import {  useEffect, useState } from "react";
 import {
@@ -19,13 +17,13 @@ import {
 import ProjectCard from "../../Components/ProjectsComp/Card/Card";
 import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import { AddProjectButton } from "../../Components/FormsComp/SubmitAndCancel";
-import { generalErrorMessage, projectAddedMessage, projectCollection, projectDeleteMessage, projectEditMessage, projectPictureStorageName } from "../../Zustand/Constants";
+import { generalErrorMessage, projectAddedMessage, projectCollection, projectDeleteMessage, projectEditMessage, projectFallBack, projectPictureStorageName } from "../../Zustand/Constants";
 import { useAlert, useButtonLoader, useZustandStore } from "../../Zustand/Zustand";
 import { User } from "firebase/auth";
 import { firebaseFirestore, firebaseStorage } from "../../Firebase/firebase";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { FallBackUI } from "../../Components/GeneralFallBackUI/FallBackUI";
+import { NoProjectsAdded } from "../../Components/GeneralFallBackUI/FallBackUI";
 import {v4 as uuidv4 } from 'uuid'
 
 
@@ -165,7 +163,7 @@ const CardsParentComponent = ({
 }: CardParentCompType & CardGenType & NoProjectsAddedType) => {
   return (
     <Box>
-      {projectData.length === 0 ? <NoProjectsAdded isLoading={isLoading}/> :   <Grid container justifyContent={"start"} spacing={4}>
+      {projectData.length === 0 ? <NoProjectsAdded fallBackText={projectFallBack} isLoading={isLoading}/> :   <Grid container justifyContent={"start"} spacing={4}>
         {projectData && projectData.map((projectData) => (
           <ProjectCard cardDetails={projectData} handleDeleteModalOpen={handleDeleteModalOpen} handleEditState={handleEditState}/>
         ))}
@@ -175,14 +173,6 @@ const CardsParentComponent = ({
   );
 };
 
-const NoProjectsAdded=({isLoading}:NoProjectsAddedType)=>{
-  return <FallBackUI>
-    {isLoading ? <CircularProgress/> : <Box>
-        No Projects Added!, Add One <TurnSlightRight/>
-      </Box>}
-      
-    </FallBackUI>
-}
 
 
 

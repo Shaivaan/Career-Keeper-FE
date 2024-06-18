@@ -18,6 +18,11 @@ const projectEditMessage = 'Project Edited Successfully';
 const projectDeleteMessage = 'Project Deleted Successfully';
 const workExpAddedMessage = 'Work Experience Added Successfully';
 const workExpEditMessage = 'Work Experience Edited Successfully';
+const expDeleteMessage = 'Experience Deleted Successfully';
+
+// FallBackText
+const projectFallBack = 'No Projects Added!, Add One';
+const workExpFallBack = 'No Experience Added!, Add One';
 
 
-export {workExpAddedMessage,workExpEditMessage, workExpStorageName, workExpCollectionName, projectEditMessage, projectDeleteMessage, projectPictureStorageName, loginSuccessMessage,registersuccessMessage,generalErrorMessage,logOutMessage,userCollection,changesSavedMessage,profilePictureCollectionStorage,projectCollection,projectAddedMessage}
+export {workExpFallBack, projectFallBack, expDeleteMessage, workExpAddedMessage,workExpEditMessage, workExpStorageName, workExpCollectionName, projectEditMessage, projectDeleteMessage, projectPictureStorageName, loginSuccessMessage,registersuccessMessage,generalErrorMessage,logOutMessage,userCollection,changesSavedMessage,profilePictureCollectionStorage,projectCollection,projectAddedMessage}

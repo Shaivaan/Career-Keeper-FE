@@ -1,3 +1,4 @@
+import firebase from 'firebase/compat/app';
 import {initializeApp} from 'firebase/app';
 import {getAuth} from 'firebase/auth'
 import {getFirestore} from 'firebase/firestore';
@@ -18,4 +19,5 @@ const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp);
 const firebaseFirestore = getFirestore(firebaseApp);
 const firebaseStorage = getStorage(firebaseApp);
+export type FireTime =  firebase.firestore.Timestamp
 export {firebaseApp, firebaseAuth, firebaseFirestore,firebaseStorage} ;

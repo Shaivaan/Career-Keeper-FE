@@ -30,3 +30,8 @@
     font-size: 1.2rem;
     font-weight: bold;
 }
+
+.loader_main{
+    height: 80vh;
+    width: 100%;
+}

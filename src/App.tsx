@@ -9,10 +9,11 @@ import { WorkExpereince } from './Routes/WorkExperience/WorkExpereince';
 import { useEffect, useState } from 'react';
 import SignIn from './Routes/AuthRoutes/Login/Login';
 import SignUp from './Routes/AuthRoutes/Register/Register';
-import { GlobalAlert } from './Components/GlobalAlert/GlobalAlert';
+import { GlobalAlert } from './Components/GlobalComponents/GlobalAlert';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from './Firebase/firebase';
 import { useZustandStore } from './Zustand/Zustand';
+import { Box, CircularProgress } from '@mui/material';
 
 
 function App() {
@@ -21,12 +22,15 @@ function App() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const [isVerifyingUser,setIsVerifyingUser] = useState(false);
 
   useEffect(()=>{
+    setIsVerifyingUser(true);
     routeHandler();
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
       handleIsLoggedIn(user);
       setCurrentUserData(user);
+      setIsVerifyingUser(false);
     });
     return () => unsubscribe();
   })
@@ -51,7 +55,7 @@ function App() {
   return (
     <>
     <GlobalAlert/>
-    {isLoggedIn ? <LoggedInRoutes/> : <LoggedOutRoutes/>}
+    { isVerifyingUser ? <LoadingProgress/> : isLoggedIn ? <LoggedInRoutes/> : <LoggedOutRoutes/>}
     </>
   )
 }
@@ -72,6 +76,12 @@ const LoggedOutRoutes=()=>{
       <Route path={loginRoute} Component={SignIn}></Route>
       <Route path={registerRoute} Component={SignUp}></Route>
   </Routes>
+}
+
+const LoadingProgress=()=>{
+  return <Box className = 'loader_main global_center_style'>
+    <CircularProgress/>
+  </Box>
 }
 
 export default App;

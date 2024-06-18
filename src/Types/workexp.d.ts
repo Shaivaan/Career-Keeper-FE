@@ -1,8 +1,10 @@
+
 interface WorkExpModalType{
     isOpen:boolean,
     handleClose : ()=>void
     handleSubmit:(value:WorkExpFormType)=>void
     isEditState:boolean
+    initial_value:WorkExpFormType
 }
 
 interface WorkExpFormType{
@@ -16,10 +18,14 @@ interface WorkExpFormType{
 
 type WorkExpState = [] | WorkExpFormType[]
 interface ExperienceCardType{
-    eachExp:WorkExpFormType 
+    eachExp:WorkExpFormType;
+    deletModalOpenAndClose:(isOpen:boolean,workExpId? : string)=>void
+    handleWorkExpFormValue:(value:WorkExpFormType)=>void
 }
 
 interface FirestoreTimestamp{
     seconds: number;
     nanoseconds: number;
 }
+
+type FirebaseTime = firebase.firestore.Timestamp
