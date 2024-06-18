@@ -3,7 +3,7 @@ import {Routes,Route, useLocation, useNavigate} from 'react-router-dom';
 import { Exception } from './Routes/ExceptionScreen/Excpetion';
 import NavbarWithComp from './Components/NavbarWithComp/NavbarWithComp';
 import { MyProjectsScreen } from './Routes/MyProjects/MyProjects';
-import { authRoutesArray, loginRoute, profileRoute, projectsRoute, registerRoute, workExperience } from './Components/Sidebar/utils';
+import { authRoutesArray, handleTitleText, loginRoute, profileRoute, projectsRoute, registerRoute, workExperience } from './Components/Sidebar/utils';
 import { MyProfile } from './Routes/MyProfile/MyProfile';
 import { WorkExpereince } from './Routes/WorkExperience/WorkExpereince';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,8 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from './Firebase/firebase';
 import { useZustandStore } from './Zustand/Zustand';
 import { Box, CircularProgress } from '@mui/material';
+import { Helmet } from 'react-helmet';
+
 
 
 function App() {
@@ -55,6 +57,7 @@ function App() {
   return (
     <>
     <GlobalAlert/>
+    <TitleComp/>
     { isVerifyingUser ? <LoadingProgress/> : isLoggedIn ? <LoggedInRoutes/> : <LoggedOutRoutes/>}
     </>
   )
@@ -82,6 +85,14 @@ const LoadingProgress=()=>{
   return <Box className = 'loader_main global_center_style'>
     <CircularProgress/>
   </Box>
+}
+
+const TitleComp=()=>{
+  const {pathname} = useLocation();
+  return <Helmet>
+  <title>{handleTitleText(pathname)}</title>
+  <meta name="description" content="Welcome to the homepage of my awesome app." />
+</Helmet>
 }
 
 export default App;

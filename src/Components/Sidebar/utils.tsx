@@ -42,4 +42,19 @@ const navbarHeading = (currentRoute: string) => {
     }
 }
 
-export {navbarListArray,navbarHeading,profileRoute,projectsRoute,workExperience,contactMeRoute,loginRoute,registerRoute,authRoutesArray};
+const handleTitleText = (currentRoute: string) => {
+    switch (currentRoute) {
+        case profileRoute:
+            return 'Profile';
+        case projectsRoute:
+            return 'Projects';
+        case contactMeRoute:
+            return 'Contact Me';
+        case workExperience:
+            return 'Work Experience';
+        default:
+            return "CareerKeeper"; 
+    }
+}
+
+export {handleTitleText, navbarListArray,navbarHeading,profileRoute,projectsRoute,workExperience,contactMeRoute,loginRoute,registerRoute,authRoutesArray};
