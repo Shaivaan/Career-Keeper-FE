@@ -31,6 +31,7 @@ import { WelcomeModal } from "../../Components/WelcomeModal/WelcomeModal";
 
 export const icon = <CheckBoxOutlineBlank fontSize="small" />;
 export const checkedIcon = <CheckBox fontSize="small" />;
+const showModalTime = 2000;
 
 export const MyProjectsScreen = () => {
   const [open, setOpen] = useState(false);
@@ -144,10 +145,16 @@ export const MyProjectsScreen = () => {
 
   useEffect(()=>{
     fetchProjectsByUserId();
-    if(state?.isRegisterFirst){
-      setIsWelcomeModalOpen(true);
-    }
+    showWelcomeModal();
   },[])
+
+  const showWelcomeModal=()=>{
+    if(state?.isRegisterFirst){
+      setTimeout(()=>{
+        setIsWelcomeModalOpen(true);
+      },showModalTime)
+    }
+  }
 
 
   return (

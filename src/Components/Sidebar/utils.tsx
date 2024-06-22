@@ -1,4 +1,4 @@
-import {PersonOutline, WorkOutline,WhatshotOutlined} from '@mui/icons-material';
+import {PersonOutline, WorkOutline,WhatshotOutlined, ArticleOutlined} from '@mui/icons-material';
 
 const profileRoute = '/profile';
 const projectsRoute = '/';
@@ -23,6 +23,11 @@ const navbarListArray:SidebarEachType[] = [
         title : 'Experience',
         icon : <WorkOutline/>,
         route : workExperience
+    },
+    {
+        title : 'Documentation',
+        icon : <ArticleOutlined/>,
+        route : docRoute
     }
 ]
 
@@ -38,6 +43,8 @@ const navbarHeading = (currentRoute: string) => {
             return 'Contact Me';
         case workExperience:
             return 'Work Experience';
+        case docRoute:
+            return 'Documentation';
         default:
             return "Hey, Please go back!"; 
     }
@@ -53,6 +60,8 @@ const handleTitleText = (currentRoute: string) => {
             return 'Contact Me';
         case workExperience:
             return 'Work Experience';
+        case docRoute:
+                return 'Docs';    
         default:
             return "CareerKeeper"; 
     }

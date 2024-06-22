@@ -1,0 +1,35 @@
+.doc_head{
+    font-weight: 400;
+    font-size: 2.5rem;
+}
+
+.prereqetext{
+    font-size: 1.9rem;
+    font-weight: 500;
+}
+
+.listBold{
+    font-weight: 500;
+}
+
+.sub_head{
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.code_parent{
+    background-color: #f5f5f5;
+    padding: 2rem;
+    border-radius: 1;
+    position: relative;
+    overflow: auto;
+}
+
+ .copy-icon {
+    position: absolute !important;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+  }

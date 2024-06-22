@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { Box, Avatar, Grid, IconButton, Button, Chip } from "@mui/material";
-import { Edit } from "@mui/icons-material";
+import { Box, Avatar, Grid, IconButton, Button, Chip, Tooltip } from "@mui/material";
+import { ContentCopy, Edit } from "@mui/icons-material";
 import "./MyProfile.css";
 import { EditProfileForm, EditWorkShowCaseForm } from "../../Components/MyProfilePageComp/MyProfilePageComp";
 import { firebaseFirestore, firebaseStorage } from "../../Firebase/firebase";
 import { AddPrefixToKeys, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAlert, useButtonLoader, useZustandStore } from "../../Zustand/Zustand";
 import { User } from "firebase/auth";
-import { changesSavedMessage, generalErrorMessage, profilePictureCollectionStorage, userCollection } from "../../Zustand/Constants";
+import { IdCopyMessage, changesSavedMessage, generalErrorMessage, profilePictureCollectionStorage, userCollection } from "../../Zustand/Constants";
 import { edit_profile_form_initial_values, showcase_form_initial_values } from "../../Components/FormsComp/InitialValues";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import {v4 as uuidv4 } from 'uuid'
+import {v4 as uuidv4 } from 'uuid';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 
 
 export const MyProfile = () => {
@@ -90,7 +92,7 @@ export const MyProfile = () => {
 
   return (
     <Box className="global_uniform_vertical_style">
-      <ProfileDisplay profileData={profilePageData}/>
+      <ProfileDisplay profileData={profilePageData} uid={(currentUserData as User).uid}/>
       <PersonalInformation handleEditProfileModalOpen={handleDeleteModalOpen} profileData={profilePageData}/>
       <WorkShowCase  handleOpenWorkShowCaseModalOpen={handleShowCaseOpen} profileData={profilePageData}/>
       <EditProfileForm
@@ -144,8 +146,12 @@ const LinkHandler=({navLink}:LinkHandlerType)=>{
   </>
 }
 
-const ProfileDisplay = ({profileData}:ProfileDisplaySectionType) => {
+const ProfileDisplay = ({profileData,uid}:ProfileDisplaySectionType & {uid:string}) => {
   const {first_name,last_name,email,profile_picture,profession} = profileData;
+  const showAlert = useAlert();
+  const showCopiedAlert = ()=>{
+    showAlert(IdCopyMessage,'success')
+  }
   return (
     <Box className="profileDisplayParent gridBackground">
       <Avatar className="avatar_style" src={profile_picture as unknown as undefined}/>
@@ -153,8 +159,13 @@ const ProfileDisplay = ({profileData}:ProfileDisplaySectionType) => {
         className="global_uniform_vertical_style"
         style={{ rowGap: "0.2rem" }}
       >
+        <Box display='flex'>
         <Box className="nameHead">{first_name} {last_name}</Box>
+        <CopyToClipboard text={uid} onCopy={showCopiedAlert}> 
+            <IconButton><Tooltip title='Copy Your User ID'><ContentCopy/></Tooltip></IconButton>
+        </CopyToClipboard>
         <Box>
+        </Box>
           {profession && profession.map(((eachProfession)=><Chip style={{marginRight:'0.5rem'}} label={(eachProfession as unknown as  ProfessionType).role}/>))}
         </Box>
         <Box>{email}</Box>
