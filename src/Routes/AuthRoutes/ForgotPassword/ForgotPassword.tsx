@@ -16,7 +16,7 @@ import { useRef, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from '../../../Zustand/Zustand';
-import { forgotPasswordRestMail } from '../../../Zustand/Constants';
+import { forgotPasswordError, forgotPasswordRestMail } from '../../../Zustand/Constants';
 
 
 const defaultTheme = createTheme();
@@ -61,7 +61,7 @@ const ForgotPasswordForm = ()=>{
 
 
   const handleError=()=>{
-    showAlert('Error sending password reset email','error');
+    showAlert(forgotPasswordError,'error');
   }
 
   const handleSuccess =()=>{
