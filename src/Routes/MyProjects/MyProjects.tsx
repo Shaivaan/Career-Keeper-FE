@@ -25,6 +25,8 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, 
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { NoProjectsAdded } from "../../Components/GeneralFallBackUI/FallBackUI";
 import {v4 as uuidv4 } from 'uuid'
+import { useLocation } from "react-router-dom";
+import { WelcomeModal } from "../../Components/WelcomeModal/WelcomeModal";
 
 
 export const icon = <CheckBoxOutlineBlank fontSize="small" />;
@@ -32,6 +34,8 @@ export const checkedIcon = <CheckBox fontSize="small" />;
 
 export const MyProjectsScreen = () => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const { state } = location;
   const currentUserData = useZustandStore((state) => state.currentUserData);
   const buttonLoading = useButtonLoader();
   const handleOpen = () => setOpen(true);
@@ -45,6 +49,8 @@ export const MyProjectsScreen = () => {
   const [projectToDeleteId,setProjectToDeleteId] = useState<string>("");
   const [projectFormInitialValues,setProjectFormInitialValues] = useState(add_edit_project_initial_values);
   const [isProjectLoading,setIsProjectsLoading] = useState(true);
+  const [isWelcomeModalOpen,setIsWelcomeModalOpen] = useState(false);
+
 
   const handleDeleteModalOpen = (project_id:string) => {
     setIsDeleteModalOpen(true)
@@ -133,13 +139,20 @@ export const MyProjectsScreen = () => {
     }
   }
 
+  const closeWelcomeModal=()=>setIsWelcomeModalOpen(false)
+
+
   useEffect(()=>{
     fetchProjectsByUserId();
+    if(state?.isRegisterFirst){
+      setIsWelcomeModalOpen(true);
+    }
   },[])
 
 
   return (
     <Box>
+      <WelcomeModal isOpen={isWelcomeModalOpen} handleClose={closeWelcomeModal}/>
       <DeleteModal
         isOpen={isDeleteModalOpen}
         closeModal={() => handleDeleteModalClose()}

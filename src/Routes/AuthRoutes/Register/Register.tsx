@@ -59,7 +59,7 @@ const RegisterForm = ()=>{
   const [isPasswordVisible,setIsPasswordVisible] = useState(false);
   const handleSuccess = ()=>{
     showAlert(registersuccessMessage,'success');
-    navigate(projectsRoute)
+    navigate(projectsRoute,{state:{isRegisterFirst:true}});
   }
 
   const handleError=(error:unknown)=>{

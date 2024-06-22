@@ -14,7 +14,7 @@ import { formatFirestoreTimestamp } from '../../Routes/MyProjects/utils';
 
 const AddEditExperienceModal=({isEditState,handleClose,isOpen,handleSubmit,initial_value}:WorkExpModalType)=>{
 
-    const heading = isEditState ? 'Add New Experience' : 'Edit Experience'
+    const heading = !isEditState ? 'Add New Experience' : 'Edit Experience'
     const inputRef = useRef<null | HTMLInputElement>(null);
     const [isCurrentlyWorking,setIsCurrentlyWorking] = useState(false);
     const handleBoxClick = () => {
@@ -61,7 +61,7 @@ const AddEditExperienceModal=({isEditState,handleClose,isOpen,handleSubmit,initi
         touched,
       }) => (
         <Box className="global_uniform_vertical_style">
-          <Box>Add {heading}</Box>
+          <Box>{heading}</Box>
           <Box>
             {values.company_logo !== null && (
               <Box className="addButtonParent">

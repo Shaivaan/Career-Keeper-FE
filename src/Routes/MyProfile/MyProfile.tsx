@@ -13,7 +13,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {v4 as uuidv4 } from 'uuid'
 
 
-
 export const MyProfile = () => {
   const showAlert = useAlert();
   const buttonLoading = useButtonLoader();
@@ -83,6 +82,7 @@ export const MyProfile = () => {
     buttonLoading(true);
     await updateProfileData({showCase : values})
   }
+
 
   useEffect(()=>{
     fetchUserData();

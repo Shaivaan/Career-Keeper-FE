@@ -1,0 +1,12 @@
+.careerHead{
+    font-size: 2rem;
+}
+
+.navigation_text{
+    cursor: pointer;
+    color: cadetblue;
+}
+
+.navigation_text:hover{
+    text-decoration: underline;
+}
