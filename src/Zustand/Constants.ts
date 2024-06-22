@@ -25,6 +25,7 @@ const IdCopyMessage = 'User ID copied successfully!';
 const reqMessageCopy = 'Request copied successfully!';
 const resMessageCopy = 'Response copied successfully!';
 const apiCopy = 'API copied successfully!';
+const forgotPasswordRestMail = 'Password reset email sent successfully!'
 
 
 
@@ -33,4 +34,4 @@ const projectFallBack = 'No Projects Added!, Add One';
 const workExpFallBack = 'No Experience Added!, Add One';
 
 
-export {apiCopy, baseURLDOCID, baseURLCollection, resMessageCopy, reqMessageCopy, IdCopyMessage, workExpFallBack, projectFallBack, expDeleteMessage, workExpAddedMessage,workExpEditMessage, workExpStorageName, workExpCollectionName, projectEditMessage, projectDeleteMessage, projectPictureStorageName, loginSuccessMessage,registersuccessMessage,generalErrorMessage,logOutMessage,userCollection,changesSavedMessage,profilePictureCollectionStorage,projectCollection,projectAddedMessage}
+export {forgotPasswordRestMail, apiCopy, baseURLDOCID, baseURLCollection, resMessageCopy, reqMessageCopy, IdCopyMessage, workExpFallBack, projectFallBack, expDeleteMessage, workExpAddedMessage,workExpEditMessage, workExpStorageName, workExpCollectionName, projectEditMessage, projectDeleteMessage, projectPictureStorageName, loginSuccessMessage,registersuccessMessage,generalErrorMessage,logOutMessage,userCollection,changesSavedMessage,profilePictureCollectionStorage,projectCollection,projectAddedMessage}

@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { projectsRoute, registerRoute } from '../../../Components/Sidebar/utils';
+import { forgotPasswordRoute, projectsRoute, registerRoute } from '../../../Components/Sidebar/utils';
 import { Formik, FormikProps } from 'formik';
 import { FormTextField } from '../../../Components/ProjectsComp/AddEditProjectModalComp/AddEditProjectModalComp';
 import { login_initial_values, loginSchema } from '../../../Components/FormsComp/InitialValues';
@@ -175,7 +175,7 @@ const LoginForm = ()=>{
   </LoadingButton>
   <Grid container>
     <Grid item xs>
-      <Link href="#" variant="body2">
+      <Link className='link_cursor' variant="body2" onClick={()=>navigate(forgotPasswordRoute)} >
         Forgot password?
       </Link>
     </Grid>

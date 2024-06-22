@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { firebaseAuth, firebaseFirestore } from "./firebase";
 import {setDoc, doc, serverTimestamp} from 'firebase/firestore';
 import { userCollection } from "../Zustand/Constants";
@@ -64,6 +64,21 @@ const handleSignInUser = async (values:LoginValueType, handleSuccess:VoidReturnT
   };
 
 
+  const handleforgotPassword = async (values:ForgotPWValueType, handleSuccess:VoidReturnType,handleError:(error:unknown)=>void,handleFinally:VoidReturnType) => {
+    try {
+      await sendPasswordResetEmail(firebaseAuth, values.email);
+      handleSuccess();
+      console.log("Password reset email sent successfully!");
+    }  catch (error) {
+      handleError(error)
+      console.log("errorr");
+  }
+  finally{
+      handleFinally();
+  }
+  };
+
+
   const handleLogout = async (handleSuccess:VoidFunction,handleError:VoidFunction) => {
     try {
       await signOut(firebaseAuth);
@@ -75,4 +90,4 @@ const handleSignInUser = async (values:LoginValueType, handleSuccess:VoidReturnT
 
 
 
-export { handleSubmitUserRegister,handleSignInUser,handleLogout };
+export { handleforgotPassword, handleSubmitUserRegister,handleSignInUser,handleLogout };

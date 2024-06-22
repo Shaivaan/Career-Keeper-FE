@@ -10,4 +10,8 @@ interface LoginValueType{
     password: string;
 }
 
+interface ForgotPWValueType{
+    email: string;
+}
+
 type VoidReturnType = ()=>void

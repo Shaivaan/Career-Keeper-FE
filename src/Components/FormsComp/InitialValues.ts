@@ -178,6 +178,15 @@ const add_edit_project_schema = Yup.object().shape({
     is_remember : false
   }
 
+  const forgot_pw_initial_value = {
+    email : ''
+  }
+  const forgotPasswordSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+  });
+
   const loginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
@@ -187,4 +196,6 @@ const add_edit_project_schema = Yup.object().shape({
   });
 
 
-  export {loginSchema, login_initial_values, register_initial_values, register_validation_schema,baseExpchema,endDateRequiredSchema,endDateNotRequiredSchema,expereince_form_initial_value, showcase_form_initial_values,showcaseFormValidationSchema,edit_profile_form_initial_values,edit_profile_form_validation_schema ,add_edit_project_schema,add_edit_project_initial_values }
+
+
+  export {forgotPasswordSchema, forgot_pw_initial_value, loginSchema, login_initial_values, register_initial_values, register_validation_schema,baseExpchema,endDateRequiredSchema,endDateNotRequiredSchema,expereince_form_initial_value, showcase_form_initial_values,showcaseFormValidationSchema,edit_profile_form_initial_values,edit_profile_form_validation_schema ,add_edit_project_schema,add_edit_project_initial_values }
