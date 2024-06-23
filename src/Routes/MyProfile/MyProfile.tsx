@@ -162,13 +162,16 @@ const ProfileDisplay = ({profileData,uid}:ProfileDisplaySectionType & {uid:strin
         <Box display='flex'>
         <Box className="nameHead">{first_name} {last_name}</Box>
         <CopyToClipboard text={uid} onCopy={showCopiedAlert}> 
-            <IconButton><Tooltip title='Copy Your User ID'><ContentCopy/></Tooltip></IconButton>
+            <IconButton style={{marginLeft:'0.5rem'}}><Tooltip title='Copy Your User ID'><ContentCopy/></Tooltip></IconButton>
         </CopyToClipboard>
         <Box>
         </Box>
+       
+        </Box>
+        <Box marginTop={'0.3rem'}>{email}</Box>
+        <Box>
           {profession && profession.map(((eachProfession)=><Chip style={{marginRight:'0.5rem'}} label={(eachProfession as unknown as  ProfessionType).role}/>))}
         </Box>
-        <Box>{email}</Box>
       </Box>
     </Box>
   );
