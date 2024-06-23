@@ -7,7 +7,7 @@ import { docRoute } from '../Sidebar/utils';
 
 export const WelcomeModal=({handleClose,isOpen} :WelcomeModalProps)=>{
     const navigate = useNavigate();
-    return <GeneralModalParent handleClose={handleClose} isOpen={isOpen}>
+    return <GeneralModalParent handleClose={()=>{}} isOpen={isOpen}>
         <Box className="global_uniform_vertical_style">
             <Box className = 'careerHead'>Hi👋, Welcome to Career Keeper</Box>
             <Box component={'ul'}>
