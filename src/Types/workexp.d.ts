@@ -9,6 +9,7 @@ interface WorkExpModalType{
 
 interface WorkExpFormType{
     company_name : NullOrString,
+    role:NullOrString,
     company_logo : FileType,
     exp_desciption : NullOrString,
     joining_date : NullOrString | Date,

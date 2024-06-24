@@ -96,6 +96,15 @@ const AddEditExperienceModal=({isEditState,handleClose,isOpen,handleSubmit,initi
             helperText={touched.company_name && errors.company_name}
           />
           <FormTextField
+            placeholder="Your Role"
+            label="Your Role"
+            value={values.role}
+            name="role"
+            onChange={handleChange}
+            error={(errors.role && touched.role) as boolean}
+            helperText={touched.role && errors.role}
+          />
+          <FormTextField
             placeholder="Exp Desciption"
             label="Exp Desciption"
             multiline={true}
@@ -148,14 +157,18 @@ const AddEditExperienceModal=({isEditState,handleClose,isOpen,handleSubmit,initi
 
 
 const ExperienceCard=({eachExp,deletModalOpenAndClose,handleWorkExpFormValue}: ExperienceCardType)=>{
-    const {company_logo,company_name,end_date,exp_desciption,is_currently_working,joining_date} = eachExp;
+    const {company_logo,company_name,end_date,exp_desciption,is_currently_working,joining_date,role} = eachExp;
     const endDate = is_currently_working ? 'Currently Working' : formatFirestoreTimestamp(end_date as unknown as FirestoreTimestamp)
     return <Box className="gridBackground">
       <Box className = 'cardParent'>
         <Avatar className="logo_avatar" src={company_logo as string}/>
         <Box className = 'company_name_container' width={'100%'}>
           <Box className = 'global_justify_space_between'>
-              <Box className = 'headind_style'>{company_name}</Box>
+              <Box>
+                  <Box component={'span'} className = 'headind_style'>{company_name}</Box>
+                  <Box component={'span'} marginLeft={'1rem'}>(role)</Box>
+              </Box>
+              
               <Box>
                 <IconButton onClick={()=>handleWorkExpFormValue({...eachExp,joining_date:firebaseDateToMoment(eachExp.joining_date as unknown as FireTime) as unknown as Date,end_date :firebaseDateToMoment(eachExp.end_date as unknown as FireTime) as unknown as Date})}><Edit color="secondary"/></IconButton>
                 <IconButton onClick={()=>deletModalOpenAndClose(true,(eachExp as unknown as {id:string}).id)}><Delete color="error"/></IconButton>

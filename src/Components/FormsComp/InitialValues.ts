@@ -108,6 +108,7 @@ const add_edit_project_schema = Yup.object().shape({
     company_logo : null,
     exp_desciption : null,
     joining_date : null,
+    role:null,
     end_date : null,
     is_currently_working : false
   }
@@ -115,6 +116,7 @@ const add_edit_project_schema = Yup.object().shape({
 
   const baseExpchema = Yup.object().shape({
     company_name: Yup.string().required('Company name is required'),
+    role: Yup.string().required('Your role is required'),
     is_currently_working: Yup.boolean().required(),
     exp_desciption: Yup.string().required('Description is required'),
     company_logo: Yup.mixed()
