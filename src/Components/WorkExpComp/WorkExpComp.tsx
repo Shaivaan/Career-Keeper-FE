@@ -166,7 +166,7 @@ const ExperienceCard=({eachExp,deletModalOpenAndClose,handleWorkExpFormValue}: E
           <Box className = 'global_justify_space_between'>
               <Box>
                   <Box component={'span'} className = 'headind_style'>{company_name}</Box>
-                  <Box component={'span'} marginLeft={'1rem'}>(role)</Box>
+                  <Box component={'span'} marginLeft={'1rem'}>({role})</Box>
               </Box>
               
               <Box>
