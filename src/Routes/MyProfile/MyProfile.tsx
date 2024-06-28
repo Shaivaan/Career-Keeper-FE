@@ -12,6 +12,7 @@ import { edit_profile_form_initial_values, showcase_form_initial_values } from "
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {v4 as uuidv4 } from 'uuid';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { NoProjectsAdded } from "../../Components/GeneralFallBackUI/FallBackUI";
 
 
 
@@ -27,6 +28,7 @@ export const MyProfile = () => {
   const handleShowCaseClose = () => setWorkshowCaseEditModalOpen(false);
   const currentUserData = useZustandStore((state) => state.currentUserData);
   const [profilePageData,setProfilePageData] = useState<ProfileDataStateType>({...edit_profile_form_initial_values,showCase:showcase_form_initial_values});
+  const [isProfileLoading,setIsProfileLoading] = useState<boolean>(true);
 
   const fetchUserData = async () => {
     try {
@@ -40,7 +42,9 @@ export const MyProfile = () => {
         showAlert('User Not Found!','error')
       }
     } catch (error) {
-      showAlert(generalErrorMessage,'error')
+      showAlert(generalErrorMessage,'error');
+    } finally { 
+      setIsProfileLoading(false);
     }
   };
 
@@ -87,11 +91,13 @@ export const MyProfile = () => {
 
 
   useEffect(()=>{
+    setIsProfileLoading(true);
     fetchUserData();
   },[])
 
   return (
-    <Box className="global_uniform_vertical_style">
+    <>
+    { !isProfileLoading ? <Box className="global_uniform_vertical_style">
       <ProfileDisplay profileData={profilePageData} uid={(currentUserData as User).uid}/>
       <PersonalInformation handleEditProfileModalOpen={handleDeleteModalOpen} profileData={profilePageData}/>
       <WorkShowCase  handleOpenWorkShowCaseModalOpen={handleShowCaseOpen} profileData={profilePageData}/>
@@ -110,7 +116,9 @@ export const MyProfile = () => {
         }}
       />
       <EditWorkShowCaseForm updateProfileData={(values:ShowCaseFormType)=>editWorkFlow(values)} workShowCaseData={profilePageData.showCase} handleClose={handleShowCaseClose} isOpen={workshowCaseEditModalOpen} />
-    </Box>
+    </Box> : <NoProjectsAdded fallBackText={''} isLoading={isProfileLoading}/>}
+    
+    </>
   );
 };
 
