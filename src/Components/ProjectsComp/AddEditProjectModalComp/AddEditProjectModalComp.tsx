@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Checkbox, IconButton, TextField, TextFieldProps } from "@mui/material"
+import { Autocomplete, Box, Checkbox, IconButton, Rating, TextField, TextFieldProps } from "@mui/material"
 import {Close, CloudUpload} from "@mui/icons-material"
 import { GeneralModalParent } from "../../GeneralModalParent/GeneralModalParent"
 import { Formik } from "formik"
@@ -180,12 +180,37 @@ const HiddenInput = ({inputRef,handleFileChange}:HiddenInputType)=>{
                   />
                 )}
               />
+              <TextField
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                label='Visibility Rating'
+                size="medium"
+                InputProps={{
+                  inputComponent : ()=><ProjectRating rating={values.project_order} handleChange={(rating)=>setFieldValue('project_order',rating)}/>
+                }}
+              >
+              </TextField>
               <SubmitAndCancel handleClose={handleClose} handleSubmit={handleSubmit} submitButtonTitle={isEditState ? 'Save' : 'Add'}/>
             </Box>
           )}
         </Formik>
       </GeneralModalParent>
     );
+  }
+
+
+  const ProjectRating=({rating,handleChange}  : RatingCompType)=>{
+    return <Rating
+            precision={0.5}
+            sx={{padding:"0.6rem"}}
+            value={rating}
+            onChange={(_event, newValue) => {
+              handleChange(newValue as number);
+            }}
+            size="large"
+          />
   }
 
   export {HiddenInput,UploadImageBox,UploadedImage,FormTextField,EditProjectModal}

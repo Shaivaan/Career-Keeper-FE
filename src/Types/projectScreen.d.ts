@@ -8,6 +8,11 @@ interface EditModalType{
     projectFormInitialValues: AddProjectInitialValueType
 }
 
+interface RatingCompType{
+    rating : number
+    handleChange : (value:number)=>void
+}
+
 interface AddProjectButtonParent{
     handleOpen : ()=>void
     buttonTitle:string
@@ -25,6 +30,7 @@ interface AddProjectInitialValueType{
     code_link : NullOrString,
     tech_used : [] | string[],
     project_image : FileType
+    project_order:number
 }
 
 interface HiddenInputType {

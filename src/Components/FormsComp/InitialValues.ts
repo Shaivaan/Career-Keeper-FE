@@ -7,7 +7,8 @@ const add_edit_project_initial_values:AddProjectInitialValueType = {
     demo_link : null,
     code_link : null,
     tech_used : [],
-    project_image : null
+    project_image : null,
+    project_order:0
 }
 
 const add_edit_project_schema = Yup.object().shape({
