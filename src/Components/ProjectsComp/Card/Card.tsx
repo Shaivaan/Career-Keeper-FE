@@ -1,5 +1,5 @@
 import {CardMedia,Card, CardActions, CardContent,Typography,Grid, IconButton, Box} from '@mui/material';
-import {Edit,DeleteOutline, GitHub, Visibility, OpenInNew} from "@mui/icons-material";
+import {Edit,DeleteOutline, GitHub, OpenInNew} from "@mui/icons-material";
 import "./Card.css";
 
 export default function ProjectCard({handleDeleteModalOpen,handleEditState,cardDetails}:CardGenType & EachCardType) {
