@@ -1,9 +1,9 @@
 import {CardMedia,Card, CardActions, CardContent,Typography,Grid, IconButton, Box} from '@mui/material';
-import {Edit,DeleteOutline} from "@mui/icons-material";
+import {Edit,DeleteOutline, GitHub, Visibility, OpenInNew} from "@mui/icons-material";
 import "./Card.css";
 
 export default function ProjectCard({handleDeleteModalOpen,handleEditState,cardDetails}:CardGenType & EachCardType) {
-    const {description,project_image,title} = cardDetails;
+    const {description,project_image,title,demo_link,code_link} = cardDetails;
   return (
      <Grid item lg={4} md={6} sm={12}>
         <Card>    
@@ -28,6 +28,8 @@ export default function ProjectCard({handleDeleteModalOpen,handleEditState,cardD
         <CardActions>
             <IconButton onClick={()=>{handleEditState(true,cardDetails)}}><Edit color='secondary'/></IconButton>
             <IconButton onClick={()=>{handleDeleteModalOpen((cardDetails as unknown as {id:string}).id)}}><DeleteOutline color='error'/></IconButton>
+            <IconButton href={demo_link as string} target='_blank'><OpenInNew color='action'/></IconButton>
+           {code_link && <IconButton href={code_link as string} target='_blank'><GitHub color='info'/></IconButton>}
         </CardActions>
         </Card>
      </Grid>    
