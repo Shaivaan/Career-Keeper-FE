@@ -71,7 +71,6 @@ const requestExample = JSON.stringify({
         ]
     }
 }, null, 2);
-const tsLink = "https://dustbin.me/ofarkcgr"
 
 
-export {responseExample, prerequisitesData,requestExample,tsLink}
+export {responseExample, prerequisitesData,requestExample}

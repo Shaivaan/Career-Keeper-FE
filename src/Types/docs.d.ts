@@ -6,4 +6,5 @@ interface ListItemPointType{
 interface CodeWithIconType{
     showCopiedAlert:()=>void
     textToCopy : string
+    baseUrl?:boolean
 }

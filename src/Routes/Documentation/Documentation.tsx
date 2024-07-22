@@ -1,10 +1,10 @@
 import { Box,IconButton,Typography } from '@mui/material';
-import { requestExample, prerequisitesData, responseExample, tsLink } from './DocumentationUtils';
+import { prerequisitesData, responseExample } from './DocumentationUtils';
 import "./Documentation.css"
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ContentCopy } from '@mui/icons-material';
-import { useAlert } from '../../Zustand/Zustand';
-import { apiCopy, baseURLCollection, baseURLDOCID, generalErrorMessage, reqMessageCopy, resMessageCopy } from '../../Zustand/Constants';
+import { useAlert, useZustandStore } from '../../Zustand/Zustand';
+import { apiCopy, baseURLCollection, baseURLDOCID, generalErrorMessage, resMessageCopy } from '../../Zustand/Constants';
 import { firebaseFirestore } from '../../Firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -53,11 +53,13 @@ const FetchingData = ()=>{
 }
 
   const APIEndpoint=()=>{
+    const currentUserData = useZustandStore((state) => state.currentUserData);
     const showAlert = useAlert();
     const showCopiedAlert = (message:string)=>{
       showAlert(message,'success')
     }
     const [baseUrl,setBaseUrl] = useState('');
+    const [tsLink,setTsLink] = useState('');
     useEffect(()=>{
         fetchBaseUrlData();
     },[])
@@ -70,6 +72,7 @@ const FetchingData = ()=>{
           if (docSnapshot.exists()) {
             const data = docSnapshot.data();
             setBaseUrl(data?.baseUrl);
+            setTsLink(data?.typescipt_file);
           } 
         } catch (error) {
           showAlert(generalErrorMessage,'error');
@@ -81,23 +84,22 @@ const FetchingData = ()=>{
         <Box>Here are the main API endpoints you will use to fetch your data. All requests should include your user_id in the request body.</Box>
         <Box className = 'sub_head'>Get Profile Details</Box>
         <Box>API: </Box>
-        <CodeWithIcon showCopiedAlert={()=>{showCopiedAlert(apiCopy)}} textToCopy={`${baseUrl}/api/user`}/>    
-        <Box>Method: GET</Box>
-        <Box>Request Body:</Box>
-        <CodeWithIcon showCopiedAlert={()=>{showCopiedAlert(reqMessageCopy)}} textToCopy={requestExample}/>    
+        <CodeWithIcon showCopiedAlert={()=>{showCopiedAlert(apiCopy)}} textToCopy={`${baseUrl}`} baseUrl={true}/>    
         <Box>Response Body: <Box component={'a'} href={tsLink} target='_blank'>Response Type</Box></Box>
         <CodeWithIcon showCopiedAlert={()=>{showCopiedAlert(resMessageCopy)}} textToCopy={responseExample}/>    
     </Box>
 }
 
-const CodeWithIcon=({showCopiedAlert,textToCopy}:CodeWithIconType)=>{
+const CodeWithIcon=({showCopiedAlert,textToCopy,baseUrl=false}:CodeWithIconType)=>{
+    const currentUserData = useZustandStore((state) => state.currentUserData);
+    const codeLink = baseUrl ? textToCopy + `?id=${currentUserData?.uid}` : textToCopy;
    return <Box className='code_parent'>
          <IconButton className='copy-icon'>
-        <CopyToClipboard text={textToCopy} onCopy={showCopiedAlert}>     
+        <CopyToClipboard text={codeLink} onCopy={showCopiedAlert}>     
             <ContentCopy/>
           </CopyToClipboard>
             </IconButton>    
-            <Typography component={'pre'} variant="body2" >{textToCopy}</Typography>
+        {baseUrl? <a style={{textDecoration:'none'}} href={codeLink} target='_blank'>{codeLink}</a> : <Typography component={'pre'} variant="body2">{codeLink}</Typography>}
         </Box>
 }
 
