@@ -26,7 +26,7 @@ function App() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [isVerifyingUser,setIsVerifyingUser] = useState(false);
+  const [isVerifyingUser,setIsVerifyingUser] = useState(true);
 
   useEffect(()=>{
     setIsVerifyingUser(true);
@@ -49,9 +49,11 @@ function App() {
 
   const routeHandler=()=>{
     const {pathname} = location;
-    if(!isLoggedIn && !authRoutesArray.includes(pathname)){
+    if(!isVerifyingUser && !isLoggedIn && !authRoutesArray.includes(pathname)){
+      console.log('Run 1')
       navigate(loginRoute);
-    }else if(isLoggedIn && authRoutesArray.includes(pathname)){
+    }else if(!isVerifyingUser && isLoggedIn && authRoutesArray.includes(pathname)){
+      console.log('Run 2')
       navigate(projectsRoute);
     }
   }
