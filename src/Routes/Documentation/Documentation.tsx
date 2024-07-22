@@ -91,7 +91,7 @@ const FetchingData = ()=>{
 
 const CodeWithIcon=({showCopiedAlert,textToCopy,baseUrl=false}:CodeWithIconType)=>{
     const currentUserData = useZustandStore((state) => state.currentUserData);
-    const codeLink = baseUrl ? textToCopy + `?id=${currentUserData?.uid}` : textToCopy;
+    const codeLink = baseUrl ? textToCopy + `${currentUserData?.uid}` : textToCopy;
    return <Box className='code_parent'>
          <IconButton className='copy-icon'>
         <CopyToClipboard text={codeLink} onCopy={showCopiedAlert}>     
