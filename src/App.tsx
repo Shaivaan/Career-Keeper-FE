@@ -50,10 +50,8 @@ function App() {
   const routeHandler=()=>{
     const {pathname} = location;
     if(!isVerifyingUser && !isLoggedIn && !authRoutesArray.includes(pathname)){
-      console.log('Run 1')
       navigate(loginRoute);
     }else if(!isVerifyingUser && isLoggedIn && authRoutesArray.includes(pathname)){
-      console.log('Run 2')
       navigate(projectsRoute);
     }
   }
