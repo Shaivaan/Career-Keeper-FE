@@ -53,7 +53,6 @@ const FetchingData = ()=>{
 }
 
   const APIEndpoint=()=>{
-    const currentUserData = useZustandStore((state) => state.currentUserData);
     const showAlert = useAlert();
     const showCopiedAlert = (message:string)=>{
       showAlert(message,'success')
