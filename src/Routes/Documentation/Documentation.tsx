@@ -27,7 +27,7 @@ const Prerequisites = () => {
         <Box className='gridBackground global_uniform_vertical_style'>
             <Box className='prereqetext'>Prerequisites</Box>
             <Box>
-                <Box>Before you start using the APIs, make sure you have completed the following steps:</Box>
+                <Box>Before you start using this API, make sure you have completed the following steps:</Box>
                 <Box component={'ol'}>
                     {prerequisitesData.map(({ pointKey, pointValue }) => <ListItemPoint pointKey={pointKey} pointValue={pointValue} />)}
                 </Box>
