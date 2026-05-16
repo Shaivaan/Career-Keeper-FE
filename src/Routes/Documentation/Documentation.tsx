@@ -4,10 +4,7 @@ import "./Documentation.css"
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ContentCopy } from '@mui/icons-material';
 import { useAlert, useZustandStore } from '../../Zustand/Zustand';
-import { apiCopy, baseURLCollection, baseURLDOCID, generalErrorMessage, resMessageCopy } from '../../Zustand/Constants';
-import { firebaseFirestore } from '../../Firebase/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { apiCopy, resMessageCopy } from '../../Zustand/Constants';
 
 
 export const Documentation = () => {
@@ -57,26 +54,8 @@ const FetchingData = ()=>{
     const showCopiedAlert = (message:string)=>{
       showAlert(message,'success')
     }
-    const [baseUrl,setBaseUrl] = useState('');
-    const [tsLink,setTsLink] = useState('');
-    useEffect(()=>{
-        fetchBaseUrlData();
-    },[])
-
-
-    const fetchBaseUrlData = async () => {
-        try {
-          const docRef = doc(firebaseFirestore, baseURLCollection, baseURLDOCID);
-          const docSnapshot = await getDoc(docRef);
-          if (docSnapshot.exists()) {
-            const data = docSnapshot.data();
-            setBaseUrl(data?.baseUrl);
-            setTsLink(data?.typescipt_file);
-          } 
-        } catch (error) {
-          showAlert(generalErrorMessage,'error');
-        }
-      };
+    const baseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
+    const tsLink = import.meta.env.VITE_TYPESCRIPT_FILE_LINK ?? '';
 
     return <Box className='gridBackground global_uniform_vertical_style'>
         <Box className = 'prereqetext'>API Endpoints</Box>

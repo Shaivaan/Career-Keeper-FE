@@ -18,7 +18,7 @@ import {Logout} from '@mui/icons-material';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { useLocation } from 'react-router-dom';
 import { navbarHeading } from '../Sidebar/utils';
-import { handleLogout } from '../../Firebase/AuthFunction';
+import { handleLogout } from '../../services/authService';
 import { useAlert } from '../../Zustand/Zustand';
 import { generalErrorMessage, logOutMessage } from '../../Zustand/Constants';
 

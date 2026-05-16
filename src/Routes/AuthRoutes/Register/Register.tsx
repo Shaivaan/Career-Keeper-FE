@@ -12,7 +12,7 @@ import { FormTextField } from '../../../Components/ProjectsComp/AddEditProjectMo
 import { Formik, FormikProps } from 'formik';
 import { register_initial_values, register_validation_schema } from '../../../Components/FormsComp/InitialValues';
 import { useRef, useState } from 'react';
-import { handleSubmitUserRegister } from '../../../Firebase/AuthFunction';
+import { handleSubmitUserRegister } from '../../../services/authService';
 import {LoadingButton}  from '@mui/lab'
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from '../../../Zustand/Zustand';

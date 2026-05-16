@@ -1,4 +1,3 @@
-import { User } from 'firebase/auth';
 import { useCallback } from 'react';
 import { create } from 'zustand';
 
@@ -13,7 +12,7 @@ const useZustandStore = create<Store>()((set) => ({
 
     // User
     currentUserData : null,
-    setCurrentUserData : (currentUserData : CurrentUserDataType<User>)=>set((_state) => ({ currentUserData })),
+    setCurrentUserData : (currentUserData : CurrentUserDataType)=>set((_state) => ({ currentUserData })),
 
     // ButtonLoad
     isApiProcessing:false,

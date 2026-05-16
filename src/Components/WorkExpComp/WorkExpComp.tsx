@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import {Avatar, Box,Checkbox,Grid,IconButton, TextFieldProps} from '@mui/material';
 import moment from "moment";
-import { FireTime } from "../../Firebase/firebase";
 import { Formik } from 'formik';
 import { GeneralModalParent } from '../GeneralModalParent/GeneralModalParent';
 import { endDateNotRequiredSchema, endDateRequiredSchema } from '../FormsComp/InitialValues';
@@ -10,7 +9,7 @@ import { FormTextField, HiddenInput, UploadImageBox } from '../ProjectsComp/AddE
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { SubmitAndCancel } from '../FormsComp/SubmitAndCancel';
-import { formatFirestoreTimestamp } from '../../Routes/MyProjects/utils';
+import { formatDate } from '../../Routes/MyProjects/utils';
 
 const AddEditExperienceModal=({isEditState,handleClose,isOpen,handleSubmit,initial_value}:WorkExpModalType)=>{
 
@@ -105,16 +104,16 @@ const AddEditExperienceModal=({isEditState,handleClose,isOpen,handleSubmit,initi
             helperText={touched.role && errors.role}
           />
           <FormTextField
-            placeholder="Exp Desciption"
-            label="Exp Desciption"
+            placeholder="Exp Description"
+            label="Exp Description"
             multiline={true}
             minRows={4}
-            value={values.exp_desciption}
-            name="exp_desciption"
-            id="exp_desciption"
+            value={values.exp_description}
+            name="exp_description"
+            id="exp_description"
             onChange={handleChange}
-            error={(errors.exp_desciption && touched.exp_desciption) as boolean}
-            helperText={touched.exp_desciption && errors.exp_desciption}
+            error={(errors.exp_description && touched.exp_description) as boolean}
+            helperText={touched.exp_description && errors.exp_description}
           />
 
 
@@ -157,8 +156,8 @@ const AddEditExperienceModal=({isEditState,handleClose,isOpen,handleSubmit,initi
 
 
 const ExperienceCard=({eachExp,deletModalOpenAndClose,handleWorkExpFormValue}: ExperienceCardType)=>{
-    const {company_logo,company_name,end_date,exp_desciption,is_currently_working,joining_date,role} = eachExp;
-    const endDate = is_currently_working ? 'Currently Working' : formatFirestoreTimestamp(end_date as unknown as FirestoreTimestamp)
+    const {company_logo,company_name,end_date,exp_description,is_currently_working,joining_date,role} = eachExp;
+    const endDate = is_currently_working ? 'Currently Working' : formatDate(end_date as string)
     return <Box className="gridBackground">
       <Box className = 'cardParent'>
         <Avatar className="logo_avatar" src={company_logo as string}/>
@@ -168,23 +167,26 @@ const ExperienceCard=({eachExp,deletModalOpenAndClose,handleWorkExpFormValue}: E
                   <Box component={'span'} className = 'headind_style'>{company_name}</Box>
                   <Box component={'span'} marginLeft={'1rem'}>({role})</Box>
               </Box>
-              
+
               <Box>
-                <IconButton onClick={()=>handleWorkExpFormValue({...eachExp,joining_date:firebaseDateToMoment(eachExp.joining_date as unknown as FireTime) as unknown as Date,end_date :firebaseDateToMoment(eachExp.end_date as unknown as FireTime) as unknown as Date})}><Edit color="secondary"/></IconButton>
+                <IconButton onClick={()=>handleWorkExpFormValue({...eachExp,joining_date:dateStringToMoment(eachExp.joining_date) as unknown as Date,end_date :dateStringToMoment(eachExp.end_date) as unknown as Date})}><Edit color="secondary"/></IconButton>
                 <IconButton onClick={()=>deletModalOpenAndClose(true,(eachExp as unknown as {id:string}).id)}><Delete color="error"/></IconButton>
               </Box>
           </Box>
-          <Box>{formatFirestoreTimestamp(joining_date as unknown as FirestoreTimestamp)} -  {endDate}</Box>
+          <Box>{formatDate(joining_date as string)} -  {endDate}</Box>
         </Box>
       </Box>
-      <Box className = 'workExpDescription'>{exp_desciption}</Box>
+      <Box className = 'workExpDescription'>{exp_description}</Box>
     </Box>
   }
 
 
-  const firebaseDateToMoment=(date:FireTime)=>{
-    return moment(date.toDate())
+  // Postgres `date` columns come back as ISO strings; the date picker expects a moment.
+  const dateStringToMoment=(date:WorkExpFormType['joining_date'])=>{
+    if(!date) return null;
+    const m = moment(date);
+    return m.isValid() ? m : null;
   }
-  
+
 
   export {ExperienceCard, AddEditExperienceModal}

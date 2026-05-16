@@ -11,7 +11,7 @@ import { loginRoute } from '../../../Components/Sidebar/utils';
 import { Formik } from 'formik';
 import { FormTextField } from '../../../Components/ProjectsComp/AddEditProjectModalComp/AddEditProjectModalComp';
 import { forgot_pw_initial_value, forgotPasswordSchema } from '../../../Components/FormsComp/InitialValues';
-import { handleforgotPassword } from '../../../Firebase/AuthFunction';
+import { handleforgotPassword } from '../../../services/authService';
 import { useRef, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router-dom';

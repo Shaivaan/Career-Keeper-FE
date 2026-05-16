@@ -11,7 +11,7 @@ interface WorkExpFormType{
     company_name : NullOrString,
     role:NullOrString,
     company_logo : FileType,
-    exp_desciption : NullOrString,
+    exp_description : NullOrString,
     joining_date : NullOrString | Date,
     end_date : NullOrString | Date,
     is_currently_working : boolean
@@ -23,10 +23,3 @@ interface ExperienceCardType{
     deletModalOpenAndClose:(isOpen:boolean,workExpId? : string)=>void
     handleWorkExpFormValue:(value:WorkExpFormType)=>void
 }
-
-interface FirestoreTimestamp{
-    seconds: number;
-    nanoseconds: number;
-}
-
-type FirebaseTime = firebase.firestore.Timestamp

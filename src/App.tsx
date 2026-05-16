@@ -10,8 +10,7 @@ import { useEffect, useState } from 'react';
 import SignIn from './Routes/AuthRoutes/Login/Login';
 import SignUp from './Routes/AuthRoutes/Register/Register';
 import { GlobalAlert } from './Components/GlobalComponents/GlobalAlert';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { firebaseAuth } from './Firebase/firebase';
+import { supabase } from './Supabase/supabase';
 import { useZustandStore } from './Zustand/Zustand';
 import { Box, CircularProgress } from '@mui/material';
 import { Helmet } from 'react-helmet';
@@ -28,18 +27,25 @@ function App() {
   const navigate = useNavigate();
   const [isVerifyingUser,setIsVerifyingUser] = useState(true);
 
+  // Subscribe to auth state once, on mount.
   useEffect(()=>{
-    setIsVerifyingUser(true);
-    routeHandler();
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const user: AppUser | null = session?.user
+        ? { uid: session.user.id, email: session.user.email ?? null }
+        : null;
       handleIsLoggedIn(user);
       setCurrentUserData(user);
       setIsVerifyingUser(false);
     });
-    return () => unsubscribe();
-  })
+    return () => subscription.unsubscribe();
+  },[])
 
-  const handleIsLoggedIn=(user:null | User)=>{
+  // Redirect whenever route or auth state changes.
+  useEffect(()=>{
+    routeHandler();
+  },[location.pathname,isLoggedIn,isVerifyingUser])
+
+  const handleIsLoggedIn=(user:null | AppUser)=>{
     if(user === null){
       setIsLoggedIn(false);
     }else{

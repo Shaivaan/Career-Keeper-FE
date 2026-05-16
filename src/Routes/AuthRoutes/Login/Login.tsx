@@ -13,7 +13,7 @@ import { forgotPasswordRoute, projectsRoute, registerRoute } from '../../../Comp
 import { Formik, FormikProps } from 'formik';
 import { FormTextField } from '../../../Components/ProjectsComp/AddEditProjectModalComp/AddEditProjectModalComp';
 import { login_initial_values, loginSchema } from '../../../Components/FormsComp/InitialValues';
-import { handleSignInUser } from '../../../Firebase/AuthFunction';
+import { handleSignInUser } from '../../../services/authService';
 import { useRef, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { IconButton, InputAdornment } from '@mui/material';

@@ -3,14 +3,11 @@ import { Box, Avatar, Grid, IconButton, Button, Chip, Tooltip } from "@mui/mater
 import { ContentCopy, Edit } from "@mui/icons-material";
 import "./MyProfile.css";
 import { EditProfileForm, EditWorkShowCaseForm } from "../../Components/MyProfilePageComp/MyProfilePageComp";
-import { firebaseFirestore, firebaseStorage } from "../../Firebase/firebase";
-import { AddPrefixToKeys, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAlert, useButtonLoader, useZustandStore } from "../../Zustand/Zustand";
-import { User } from "firebase/auth";
-import { IdCopyMessage, changesSavedMessage, generalErrorMessage, profilePictureCollectionStorage, userCollection } from "../../Zustand/Constants";
+import { fetchProfile, updateProfile } from "../../services/profileService";
+import { uploadFile } from "../../services/storageService";
+import { IdCopyMessage, changesSavedMessage, generalErrorMessage, profilePictureCollectionStorage } from "../../Zustand/Constants";
 import { edit_profile_form_initial_values, showcase_form_initial_values } from "../../Components/FormsComp/InitialValues";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import {v4 as uuidv4 } from 'uuid';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { NoProjectsAdded } from "../../Components/GeneralFallBackUI/FallBackUI";
 
@@ -32,33 +29,29 @@ export const MyProfile = () => {
 
   const fetchUserData = async () => {
     try {
-      const userDocRef = doc(firebaseFirestore, userCollection, (currentUserData as User).uid);
-      const userDoc = await getDoc(userDocRef);
-  
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        setProfilePageData(userData as ProfileDataStateType);
+      const userData = await fetchProfile((currentUserData as AppUser).uid);
+      if (userData) {
+        setProfilePageData(userData);
       } else {
         showAlert('User Not Found!','error')
       }
     } catch (error) {
       showAlert(generalErrorMessage,'error');
-    } finally { 
+    } finally {
       setIsProfileLoading(false);
     }
   };
 
   const updateProfileData = async (updates: EditProfileFormIntiValueType | {showCase : ShowCaseFormType}) => {
     try {
-      const userDocRef = doc(firebaseFirestore, userCollection, (currentUserData as User).uid);
-      await updateDoc(userDocRef, updates as unknown as AddPrefixToKeys<string, any>);
+      await updateProfile((currentUserData as AppUser).uid, updates);
       showAlert(changesSavedMessage,'success');
       fetchUserData();
       handleDeleteModalClose();
       handleShowCaseClose();
     } catch (error) {
       showAlert(generalErrorMessage,'error')
-    } finally { 
+    } finally {
       buttonLoading(false);
     }
   };
@@ -66,9 +59,11 @@ export const MyProfile = () => {
   const uploadFileAndUpdateProfilePicture = async (updates: EditProfileFormIntiValueType) => {
     const {profile_picture} = updates;
     try {
-      const storageRef = ref(firebaseStorage, `${profilePictureCollectionStorage}/${(currentUserData as User).uid}/${(profile_picture as File).name}_${uuidv4()}`);
-      await uploadBytes(storageRef, profile_picture as File);
-      const fileURL = await getDownloadURL(storageRef);
+      const fileURL = await uploadFile(
+        profilePictureCollectionStorage,
+        profile_picture as File,
+        (currentUserData as AppUser).uid,
+      );
       await updateProfileData({...updates,profile_picture:fileURL});
     } catch (error) {
       showAlert(generalErrorMessage,'error')
@@ -98,7 +93,7 @@ export const MyProfile = () => {
   return (
     <>
     { !isProfileLoading ? <Box className="global_uniform_vertical_style">
-      <ProfileDisplay profileData={profilePageData} uid={(currentUserData as User).uid}/>
+      <ProfileDisplay profileData={profilePageData} uid={(currentUserData as AppUser).uid}/>
       <PersonalInformation handleEditProfileModalOpen={handleDeleteModalOpen} profileData={profilePageData}/>
       <WorkShowCase  handleOpenWorkShowCaseModalOpen={handleShowCaseOpen} profileData={profilePageData}/>
       <EditProfileForm

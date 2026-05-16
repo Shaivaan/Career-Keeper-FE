@@ -184,11 +184,15 @@ const style = {
     professionObject('Engineer', 'DevSecOps Engineer')
   ];
 
-  function formatFirestoreTimestamp(firestoreTimestamp: FirestoreTimestamp): string {
-    const date = new Date(firestoreTimestamp.seconds * 1000);
-    const momentDate = moment(date);
-    const formattedDate = momentDate.format('DD MMMM, YYYY');
-    return formattedDate;
+  /**
+   * Formats a date value for display. Postgres `date` columns come back as
+   * ISO strings (e.g. "2024-01-15"); this also tolerates Date objects.
+   */
+  function formatDate(dateValue: string | Date | null | undefined): string {
+    if (!dateValue) return '';
+    const momentDate = moment(dateValue);
+    if (!momentDate.isValid()) return '';
+    return momentDate.format('DD MMMM, YYYY');
   }
 
-  export {style,tech_used_array,professions,professionObject,formatFirestoreTimestamp}
+  export {style,tech_used_array,professions,professionObject,formatDate}

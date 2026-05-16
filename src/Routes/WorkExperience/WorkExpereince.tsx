@@ -3,13 +3,10 @@ import { Box } from "@mui/material"
 import { AddProjectButton } from "../../Components/FormsComp/SubmitAndCancel"
 import { expereince_form_initial_value } from "../../Components/FormsComp/InitialValues"
 import "./WorkExpereince.css"
-import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage"
-import { firebaseFirestore, firebaseStorage } from "../../Firebase/firebase"
-import {v4 as uuidv4 } from 'uuid'
-import { expDeleteMessage, generalErrorMessage, workExpAddedMessage, workExpCollectionName, workExpEditMessage, workExpFallBack, workExpStorageName } from "../../Zustand/Constants"
+import { expDeleteMessage, generalErrorMessage, workExpAddedMessage, workExpEditMessage, workExpFallBack, workExpStorageName } from "../../Zustand/Constants"
 import { useAlert, useButtonLoader, useZustandStore } from "../../Zustand/Zustand"
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore"
-import { User } from "firebase/auth"
+import { addWorkExp, deleteWorkExp, fetchWorkExpByUserId as fetchWorkExp, getWorkExpById, updateWorkExp } from "../../services/workExpService"
+import { deleteFileByUrl, uploadFile } from "../../services/storageService"
 import DeleteModal from "../../Components/DeleteModal/DeleteModal"
 import { AddEditExperienceModal, ExperienceCard } from "../../Components/WorkExpComp/WorkExpComp"
 import { NoProjectsAdded } from "../../Components/GeneralFallBackUI/FallBackUI"
@@ -53,9 +50,7 @@ export const WorkExpereince=()=>{
         return;
       }
       try {
-        const storageRef = ref(firebaseStorage, `${workExpStorageName}/${(company_logo as File).name}_${uuidv4()}`);
-        await uploadBytes(storageRef, company_logo as File);
-        const company_logo_url = await getDownloadURL(storageRef);
+        const company_logo_url = await uploadFile(workExpStorageName, company_logo as File);
         await addEditWorkExp({...values,company_logo:company_logo_url});
       } catch (error) {
         showAlert(generalErrorMessage,'error');
@@ -65,11 +60,11 @@ export const WorkExpereince=()=>{
     const addEditWorkExp = async (values:WorkExpFormType) => {
       const successToastMessage = isEditState ? workExpEditMessage : workExpAddedMessage
       try {
+        const userId = (currentUserData as AppUser).uid;
         if(!isEditState){
-          await addDoc(collection(firebaseFirestore, workExpCollectionName), {...values,user_id:(currentUserData as User).uid});
+          await addWorkExp(values, userId);
         }else{
-          const projectDocRef = doc(firebaseFirestore, workExpCollectionName, (values as unknown as {id:string}).id);
-          await updateDoc(projectDocRef, {...values,user_id:(currentUserData as User).uid});
+          await updateWorkExp(values as WorkExpFormType & {id:string}, userId);
         }
         showAlert(successToastMessage,'success');
       } catch (error) {
@@ -90,9 +85,7 @@ export const WorkExpereince=()=>{
 
     const fetchWorkExpByUserId = async () => {
       try {
-        const queryDoc = query(collection(firebaseFirestore, workExpStorageName), where("user_id", "==", (currentUserData as User).uid));
-        const querySnapshot = await getDocs(queryDoc);
-        const workExpRecords = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const workExpRecords = await fetchWorkExp((currentUserData as AppUser).uid);
         setWorkExpData(workExpRecords as unknown as WorkExpFormType[]);
       } catch (error) {
         showAlert(generalErrorMessage,'error');
@@ -104,13 +97,10 @@ export const WorkExpereince=()=>{
     const deleteProject=async()=>{
       buttonLoading(true);
       try{
-        const workExpDoc = doc(firebaseFirestore, workExpStorageName, deleteId);
-        const projectDoc = await getDoc(workExpDoc);
-        const projectData = projectDoc.data();
+        const projectData = await getWorkExpById(deleteId);
         const projectImageUrl = (projectData as WorkExpFormType).company_logo;
-        const imageRef = ref(firebaseStorage, projectImageUrl as string);
-        await deleteObject(imageRef);
-        await deleteDoc(workExpDoc);
+        await deleteFileByUrl(workExpStorageName, projectImageUrl as string);
+        await deleteWorkExp(deleteId);
         showAlert(expDeleteMessage,'success');
       }catch(error){
         showAlert(generalErrorMessage,'error');

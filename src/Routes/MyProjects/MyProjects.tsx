@@ -17,14 +17,11 @@ import {
 import ProjectCard from "../../Components/ProjectsComp/Card/Card";
 import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import { AddProjectButton } from "../../Components/FormsComp/SubmitAndCancel";
-import { generalErrorMessage, projectAddedMessage, projectCollection, projectDeleteMessage, projectEditMessage, projectFallBack, projectPictureStorageName } from "../../Zustand/Constants";
+import { generalErrorMessage, projectAddedMessage, projectDeleteMessage, projectEditMessage, projectFallBack, projectPictureStorageName } from "../../Zustand/Constants";
 import { useAlert, useButtonLoader, useZustandStore } from "../../Zustand/Zustand";
-import { User } from "firebase/auth";
-import { firebaseFirestore, firebaseStorage } from "../../Firebase/firebase";
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
-import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addProject, deleteProject as deleteProjectRecord, fetchProjectsByUserId as fetchProjects, getProjectById, updateProject } from "../../services/projectService";
+import { deleteFileByUrl, uploadFile } from "../../services/storageService";
 import { NoProjectsAdded } from "../../Components/GeneralFallBackUI/FallBackUI";
-import {v4 as uuidv4 } from 'uuid'
 import { useLocation } from "react-router-dom";
 import { WelcomeModal } from "../../Components/WelcomeModal/WelcomeModal";
 
@@ -70,11 +67,11 @@ export const MyProjectsScreen = () => {
   const addEditProject = async (values:AddProjectInitialValueType) => {
     const successToastMessage = isEditState ? projectEditMessage : projectAddedMessage
     try {
+      const userId = (currentUserData as AppUser).uid;
       if(!isEditState){
-        await addDoc(collection(firebaseFirestore, projectCollection), {...values,user_id:(currentUserData as User).uid});
+        await addProject(values, userId);
       }else{
-        const projectDocRef = doc(firebaseFirestore, projectCollection, (values as unknown as {id:string}).id);
-        await updateDoc(projectDocRef, {...values,user_id:(currentUserData as User).uid});
+        await updateProject(values as AddProjectInitialValueType & {id:string}, userId);
       }
       showAlert(successToastMessage,'success');
     } catch (error) {
@@ -92,9 +89,7 @@ export const MyProjectsScreen = () => {
       return;
     }
     try {
-      const storageRef = ref(firebaseStorage, `${projectPictureStorageName}/${(project_image as File).name}_${uuidv4()}`);
-      await uploadBytes(storageRef, project_image as File);
-      const project_image_url = await getDownloadURL(storageRef);
+      const project_image_url = await uploadFile(projectPictureStorageName, project_image as File);
       await addEditProject({...values,project_image:project_image_url})
     } catch (error) {
       showAlert(generalErrorMessage,'error')
@@ -110,9 +105,7 @@ export const MyProjectsScreen = () => {
 
   const fetchProjectsByUserId = async () => {
     try {
-      const queryDoc = query(collection(firebaseFirestore, projectCollection), where("user_id", "==", (currentUserData as User).uid));
-      const querySnapshot = await getDocs(queryDoc);
-      const projects = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const projects = await fetchProjects((currentUserData as AppUser).uid);
       setProjecstData(projects as unknown as AddProjectInitialValueType[]);
       setIsProjectsLoading(false);
     } catch (error) {
@@ -123,13 +116,10 @@ export const MyProjectsScreen = () => {
   const deleteProject=async()=>{
     buttonLoading(true);
     try{
-      const projectDocRef = doc(firebaseFirestore, projectCollection, projectToDeleteId);
-      const projectDoc = await getDoc(projectDocRef);
-      const projectData = projectDoc.data();
+      const projectData = await getProjectById(projectToDeleteId);
       const projectImageUrl = (projectData as AddProjectInitialValueType).project_image;
-      const imageRef = ref(firebaseStorage, projectImageUrl as string);
-      await deleteObject(imageRef);
-      await deleteDoc(projectDocRef);
+      await deleteFileByUrl(projectPictureStorageName, projectImageUrl as string);
+      await deleteProjectRecord(projectToDeleteId);
       showAlert(projectDeleteMessage,'success');
     }catch(error){
       showAlert(generalErrorMessage,'error');

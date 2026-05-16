@@ -107,7 +107,7 @@ const add_edit_project_schema = Yup.object().shape({
   const expereince_form_initial_value={
     company_name : null,
     company_logo : null,
-    exp_desciption : null,
+    exp_description : null,
     joining_date : null,
     role:null,
     end_date : null,
@@ -119,7 +119,7 @@ const add_edit_project_schema = Yup.object().shape({
     company_name: Yup.string().required('Company name is required'),
     role: Yup.string().required('Your role is required'),
     is_currently_working: Yup.boolean().required(),
-    exp_desciption: Yup.string().required('Description is required'),
+    exp_description: Yup.string().required('Description is required'),
     company_logo: Yup.mixed()
       .required('Company logo is required')
       .test('is-file-or-url', 'Image must be a file or a valid URL', (value) => {

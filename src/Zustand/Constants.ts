@@ -1,12 +1,7 @@
-// Firebase Docs
-const userCollection = 'users';
+// Supabase Storage bucket names
 const profilePictureCollectionStorage = 'profile_pictures';
 const projectPictureStorageName = 'projects';
-const projectCollection = 'projects';
-const workExpCollectionName = 'workExp';
 const workExpStorageName = 'workExp';
-const baseURLCollection = 'baseurl';
-const baseURLDOCID = 'MHVkvyab9Svyts6VBuAn';
 
 
 //Alert Messages
@@ -35,4 +30,4 @@ const projectFallBack = 'No Projects Added!, Add One';
 const workExpFallBack = 'No Experience Added!, Add One';
 
 
-export {forgotPasswordError, forgotPasswordRestMail, apiCopy, baseURLDOCID, baseURLCollection, resMessageCopy, reqMessageCopy, IdCopyMessage, workExpFallBack, projectFallBack, expDeleteMessage, workExpAddedMessage,workExpEditMessage, workExpStorageName, workExpCollectionName, projectEditMessage, projectDeleteMessage, projectPictureStorageName, loginSuccessMessage,registersuccessMessage,generalErrorMessage,logOutMessage,userCollection,changesSavedMessage,profilePictureCollectionStorage,projectCollection,projectAddedMessage}
+export {forgotPasswordError, forgotPasswordRestMail, apiCopy, resMessageCopy, reqMessageCopy, IdCopyMessage, workExpFallBack, projectFallBack, expDeleteMessage, workExpAddedMessage,workExpEditMessage, workExpStorageName, projectEditMessage, projectDeleteMessage, projectPictureStorageName, loginSuccessMessage,registersuccessMessage,generalErrorMessage,logOutMessage,changesSavedMessage,profilePictureCollectionStorage,projectAddedMessage}
